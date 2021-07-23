@@ -1,5 +1,4 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
     "target": "es5",
     "lib": [
@@ -20,7 +19,7 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/src/*": ["src/*"],
+      "~/src/*": ["src/*"],
       "~/styles/*": ["styles/*"]
     }
   },

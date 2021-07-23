@@ -1,0 +1,28 @@
+.sidebar {
+	margin: 0;
+	padding: 0;
+	width: 200px;
+	background-color: #f1f1f1;
+	position: fixed;
+	height: 100%;
+	overflow: auto;
+
+	a {
+		display: block;
+		padding: 16px;
+		text-decoration: none;
+    cursor: pointer;
+
+		&:hover {
+			&:not(.active) {
+				background: #22a774;
+				color: #fff;
+			}
+		}
+	}
+}
+
+.activeMenu {
+  background: #22a774;
+  color: #fff !important;
+}
