@@ -1,9 +1,11 @@
 import { NextPage } from "next"
-import { Sidebar } from "~/src/components/widgets/Sidebar"
+import Head from 'next/head'
 
 const Home: NextPage = () => {
   return (
-    <Sidebar />
+    <Head>
+      <title>Index</title>
+    </Head>
   )
 }
 
