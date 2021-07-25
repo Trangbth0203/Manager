@@ -1,15 +1,18 @@
 import React from 'react'
+import { Container, Row, Col } from 'reactstrap'
 import { Sidebar } from '~/src/components/widgets/Sidebar'
-import { Header } from '~/src/components/widgets/Header'
 
 export const Layout = ({ children }) => {
   return (
     <div>
-      {/* <Header /> */}
-      <Sidebar />
-      <div className="container" style={{ transform: 'translate(7%, 80%)' }}>
-        {children}
-      </div>
+      <Row>
+        <Col xs="2">
+          <Sidebar />
+        </Col>
+        <Col xs="10">
+          <Container className="pt-5">{children}</Container>
+        </Col>
+      </Row>
     </div>
   )
 }

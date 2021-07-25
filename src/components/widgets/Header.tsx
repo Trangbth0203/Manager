@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import {
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    NavLink,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    NavbarText,
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  NavbarText
 } from 'reactstrap'
 
 export const Header = () => {
@@ -19,7 +19,6 @@ export const Header = () => {
   const toggle = () => setIsOpen(!isOpen)
 
   return (
-    <div style={{ position: 'absolute', marginLeft: 200, width: '100%' }}>
       <Navbar color="light" light expand="md">
         <NavbarBrand href="/">reactstrap</NavbarBrand>
         <NavbarToggler onClick={toggle} />
@@ -48,6 +47,5 @@ export const Header = () => {
           <NavbarText>Simple Text</NavbarText>
         </Collapse>
       </Navbar>
-    </div>
   )
 }
