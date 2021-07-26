@@ -1,10 +1,11 @@
 import React from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import { Sidebar } from '~/src/components/widgets/Sidebar'
-
+import { Header } from '../widgets/Header'
 export const Layout = ({ children }) => {
   return (
     <div>
+      <Header />
       <Row>
         <Col xs="2">
           <Sidebar />

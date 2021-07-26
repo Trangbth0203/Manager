@@ -1,20 +1,12 @@
 import React from 'react'
 import { NextPage } from 'next'
-import {
-  Table,
-  Card,
-  CardImg,
-  CardText,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-  Button,
-} from 'reactstrap';
+import { UserList } from '~/src/components/screens/user/UserList'
+import { CustomModal } from "~/src/components/widgets/CustomModal"
 
 const Users: NextPage = () => {
   return (
     <div>
-      Users
+      <UserList />
     </div>
   )
 }

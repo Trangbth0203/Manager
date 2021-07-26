@@ -1,4 +1,5 @@
 export const MENUS = [
+
   { name: 'Home', href: '/' },
   { name: 'Departments', href: '/departments' },
   { name: 'Employees', href: '/employees' },
