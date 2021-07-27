@@ -1,11 +1,11 @@
 import React from 'react'
 import { Form, FormGroup, Label, Input } from 'reactstrap'
 
-export const DepartmentAdd = () => {
+export const DepartmentEdit = () => {
   return (
     <Form>
       <FormGroup className="mt-3">
-        <Label className="mb-1" for="exampleSelect">DepartmentName</Label>
+        <Label for="exampleSelect">DepartmentName</Label>
         <Input type="select" name="select" id="exampleSelect">
           <option>Division1</option>
           <option>Division2</option>
@@ -16,16 +16,16 @@ export const DepartmentAdd = () => {
       </FormGroup>
       <div className="d-flex justify-content-between">
         <FormGroup className="mt-3">
-          <Label className="mb-1" for="exampleNumberPerson">Number Person</Label>
+          <Label for="exampleNumberPerson">Number Person</Label>
           <Input
             type="number"
             name="Numberperson"
-            id="exampleNumberPerson"
+            id="exampleNumber Person"
             placeholder="NumberPerson"
           />
         </FormGroup>
         <FormGroup className="mt-3">
-          <Label className="mb-1" for="exampleOtherPhone">Phone</Label>
+          <Label for="exampleOtherPhone">Phone</Label>
           <Input
             type="text"
             name="Phone"
@@ -34,21 +34,21 @@ export const DepartmentAdd = () => {
           />
         </FormGroup>
       </div>
-      <div className="d-flex justify-content-between-mt-3">
+      <div className="d-flex justify-content-between">
         <FormGroup className="mt-3">
-          <Label className="mb-1" for="exampleMainManager">Main Manager</Label>
+          <Label for="exampleMainManager">Main Manager</Label>
           <Input
             type="text"
-            name="MainManager"
+            name="Mainmanager"
             id="exampleMainManager"
-            placeholder="Name  MainManager"
+            placeholder="Name  Mainmanager"
           />
         </FormGroup>
         <FormGroup className="mt-3">
-          <Label className="mb-1" for="exampleOtherManagers">Other Managers</Label>
+          <Label for="exampleOtherManagers">Other Managers</Label>
           <Input
             type="text"
-            name="OtherManagers"
+            name="Othermanagers"
             id="exampleOtherManagers"
             placeholder="Name OtherManagers"
           />

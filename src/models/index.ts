@@ -1,5 +1,6 @@
 export const MENUS = [
 
+  { name: 'Login', href: '/auth/login' },
   { name: 'Home', href: '/' },
   { name: 'Departments', href: '/departments' },
   { name: 'Employees', href: '/employees' },
