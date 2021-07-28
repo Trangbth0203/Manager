@@ -34,7 +34,7 @@ export const DepartmentAdd = () => {
           />
         </FormGroup>
       </div>
-      <div className="d-flex justify-content-between-mt-3">
+      <div className="d-flex justify-content-between">
         <FormGroup className="mt-3">
           <Label className="mb-1" for="exampleMainManager">Main Manager</Label>
           <Input

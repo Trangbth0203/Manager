@@ -1,45 +1,49 @@
-import React from "react";
-import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import React from 'react';
+import { Pagination as PaginationReact, PaginationItem, PaginationLink } from 'reactstrap'
 
-export const Paginations = () => {
+export const Pagination = (props) => {
+  const handlePageChange = () => {
+
+  }
+  
+  const pageNumbers = [1, 2, 3, 4, 5, 6]
 
   return (
-    <>
-      <nav className="mt-4">
-        <Pagination className="d-flex justify-content-end" >
-          <PaginationItem className=" disabled">
-            <PaginationLink
-              href="#pablo"
-              onClick={(e) => e.preventDefault()}
-              tabindex="-1"
-            >
-              <i className=" fa fa-angle-left"></i>
-              <span className=" sr-only">Previous</span>
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#pablo" onClick={(e) => e.preventDefault()}>
-              1
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem style={{ color: '#FFFFFF' }} className=" active">
-            <PaginationLink href="#pablo" onClick={(e) => e.preventDefault()}>
-              2 <span className=" sr-only"></span>
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#pablo" onClick={(e) => e.preventDefault()}>
-              3
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#pablo" onClick={(e) => e.preventDefault()}>
-              <i className=" fa fa-angle-right"></i>
-              <span className=" sr-only">Next</span>
-            </PaginationLink>
-          </PaginationItem>
-        </Pagination>
-      </nav>
-    </>
-  );
+    <PaginationReact className="mt-3" aria-label="Page navigation example">
+      <PaginationItem>
+        <PaginationLink
+          first
+          onClick={() => {}} 
+        />
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationLink
+          previous
+          onClick={() => {}}
+        />
+      </PaginationItem>
+      {pageNumbers.map((n: number, i: number) => (
+        <PaginationItem key={i}>
+          <PaginationLink
+            onClick={() => {}}
+          >
+            {n}
+          </PaginationLink>
+        </PaginationItem>
+      ))}
+      <PaginationItem>
+        <PaginationLink
+          next
+          onClick={() => {}}
+        />
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationLink
+          last
+          onClick={() => {}}
+        />
+      </PaginationItem>
+    </PaginationReact>
+  )
 }
+

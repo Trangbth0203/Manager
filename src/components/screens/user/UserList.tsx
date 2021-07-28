@@ -1,19 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Table, Card, CardText, CardBody, CardTitle, Button } from 'reactstrap'
-import { MOCK_DATA_USER, IMockDataUsers } from '~/src/models/users'
+import fetchApi from '~/src/helpers/fetchApi'
+import { IMockDataUsers } from '~/src/models/users'
 import { IconEdit, IconDelete } from '~/src/components/elements'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { UserAdd } from '~/src/components/screens/user/UserAdd'
 import { UserEdit } from '~/src/components/screens/user/UserEdit'
-import { Paginations } from '~/src/components/elements/pagination'
+import { Pagination } from '~/src/components/elements/pagination'
 import { Limit } from '~/src/components/elements/limit'
 import styles from '~/styles/pages/users.module.scss'
 
 export const UserList = () => {
+  const [params, setParams ] = useState({})
+  const [listUser, setListUser] = useState([])
   const [openModalCreate, setOpenModalCreate] = useState<boolean>(false)
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false)
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false)
 
+  const fetchUserList = async () => {
+    await fetchApi.getListUser({ params }).then((res) => {
+      if (res && res.data) {
+        setListUser(res.data)
+      }
+    })
+  }
+  useEffect(() => {
+    fetchUserList()
+  }, [params])
+
+   console.log(listUser)
   return (
     <>
       <Card>
@@ -34,7 +49,7 @@ export const UserList = () => {
                 </tr>
               </thead>
               <tbody>
-                {MOCK_DATA_USER.map((item: IMockDataUsers, index: number) => {
+                {listUser && listUser.map((item: IMockDataUsers, index: number) => {
                   return (
                     <tr key={index}>
                       <th scope="row">{++index}</th>
@@ -59,7 +74,7 @@ export const UserList = () => {
       </Card>
       <div className="d-flex justify-content-between">
       <Limit />
-      <Paginations/>
+      <Pagination />
       </div>
     
       <CustomModal title={'You are Sure'} show={openModalDelete} setShow={setOpenModalDelete}>

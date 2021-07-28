@@ -1,18 +1,38 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Table, Card, CardText, CardBody, CardTitle, Button } from 'reactstrap'
-import { MOCK_DATA_DEPARTMENTS, IMockDataDepartment } from '~/src/models/departments'
+import {  IMockDataDepartment } from '~/src/models/departments'
+import fetchApi from '~/src/helpers/fetchApi'
 import { IconEdit, IconDelete } from '~/src/components/elements'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { DepartmentAdd } from '~/src/components/screens/department/DepartmentAdd'
 import { DepartmentEdit } from '~/src/components/screens/department/DepartmentEdit'
-import { Paginations } from '~/src/components/elements/pagination'
+import { Pagination } from '~/src/components/elements/pagination'
 import { Limit } from '~/src/components/elements/limit'
 import styles from '~/styles/pages/departments.module.scss'
 
 export const DepartmentList = () => {
+
+  const [params, setParams] = useState({})
+  const [listDepartment, setListDepartment] = useState([])
   const [openModalCreate, setOpenModalCreate] = useState<boolean>(false)
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false)
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false)
+
+  const fetchDepartmentList = async () => {
+    await fetchApi.getListDepartment({ params }).then((res) => {
+      if (res && res.data) {
+        setListDepartment(res.data)
+      }
+    })
+  }
+
+  useEffect(() => {
+    fetchDepartmentList()
+  }, [params])
+
+   const onHandleCreateDepartment = () => {
+        
+  }
 
   return (
     <>
@@ -38,16 +58,16 @@ export const DepartmentList = () => {
                 </tr>
               </thead>
               <tbody>
-                {MOCK_DATA_DEPARTMENTS.map(
+                {listDepartment && listDepartment.map(
                   (item: IMockDataDepartment, index: number) => {
                     return (
                       <tr key={index}>
                         <th scope="row">{++index}</th>
-                        <td>{item.name}</td>
-                        <td>{item.number_person}</td>
-                        <td>{item.phone}</td>
-                        <td>{item.main_manager}</td>
-                        <td>{item.others_manager}</td>
+                        <td>{item.department_name}</td>
+                        <td>{item.department_number_person}</td>
+                        <td>{item.department_phone}</td>
+                        <td>{item.department_manager}</td>
+                        <td>{item.department_manager_other}</td>
                         <td>
                           <span className={styles.iconEdit} onClick={() => setOpenModalEdit(true)}>
                             <IconEdit />
@@ -67,7 +87,7 @@ export const DepartmentList = () => {
       </Card>
       <div className="d-flex justify-content-between">
       <Limit />
-      <Paginations/>
+      <Pagination />
       </div>
       <CustomModal title={'You are Sure'} show={openModalDelete} setShow={setOpenModalDelete}>
 
@@ -79,6 +99,7 @@ export const DepartmentList = () => {
         title={'ADD DEPARTMENT'}
         show={openModalCreate}
         setShow={setOpenModalCreate}
+        clickRightButton ={onHandleCreateDepartment}
       >
         <DepartmentAdd />
       </CustomModal>

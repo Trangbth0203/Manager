@@ -16,11 +16,12 @@ export const EmployeeADD = (props) => {
       </FormGroup>
       <FormGroup className="mt-3">
         <Label className="mb-1" for="exampleSelect">Email</Label>
-        <Input type="select" name="select" id="exampleSelect">
-          <option>huyentrang123@</option>
-          <option>thuhoai123@</option>
-          <option>thenhat123@</option>
-        </Input>
+        <Input
+            type="text"
+            name="L"
+            id="Department"
+            placeholder="with Department"
+          />
       </FormGroup>
       <FormGroup className="mt-3">
         <Label className="mb-1" for="exampleDate">Date</Label>
@@ -51,10 +52,11 @@ export const EmployeeADD = (props) => {
           />
         </FormGroup>
       </div>
-      <div className="d-flex justify-content-between mt-">
+     
         <Label className="mb-1" for="exampleEmail">Gender: </Label>
+        <div className="d-flex justify-content-start ">
         <FormGroup check>
-          <Label check>
+          <Label check style={{marginRight:25}}>
             <Input type="radio" name="radio1" /> 0
           </Label>
         </FormGroup>
