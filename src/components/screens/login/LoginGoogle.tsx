@@ -5,7 +5,6 @@ import styles from '~/styles/components/screen/loginGoogle.module.scss'
 
 export const LoginGoogle = () => {
   const responseGoogle = (response: GoogleLoginResponse) => {
-    console.log('----------------', response)
   }
 
   return (

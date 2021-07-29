@@ -14,7 +14,7 @@ const Employees: NextPage = () => {
       </Head>
       <div>
         <EmployeeList />
-        <button onClick={notify}>Notify!</button>
+       
       </div>
     </>
   )

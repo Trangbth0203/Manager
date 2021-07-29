@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Card, CardText, CardBody, CardTitle, Button } from 'reactstrap'
-import {  IMockDataDepartment } from '~/src/models/departments'
+import {
+  Table,
+  Card,
+  CardText,
+  CardBody,
+  CardTitle,
+  Button,
+  Spinner,
+} from 'reactstrap'
+import { IMockDataDepartment } from '~/src/models/departments'
 import fetchApi from '~/src/helpers/fetchApi'
 import { IconEdit, IconDelete } from '~/src/components/elements'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
@@ -11,8 +19,8 @@ import { Limit } from '~/src/components/elements/limit'
 import styles from '~/styles/pages/departments.module.scss'
 
 export const DepartmentList = () => {
-
   const [params, setParams] = useState({})
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [listDepartment, setListDepartment] = useState([])
   const [openModalCreate, setOpenModalCreate] = useState<boolean>(false)
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false)
@@ -22,6 +30,7 @@ export const DepartmentList = () => {
     await fetchApi.getListDepartment({ params }).then((res) => {
       if (res && res.data) {
         setListDepartment(res.data)
+        setIsLoading(false)
       }
     })
   }
@@ -29,10 +38,6 @@ export const DepartmentList = () => {
   useEffect(() => {
     fetchDepartmentList()
   }, [params])
-
-   const onHandleCreateDepartment = () => {
-        
-  }
 
   return (
     <>
@@ -58,27 +63,40 @@ export const DepartmentList = () => {
                 </tr>
               </thead>
               <tbody>
-                {listDepartment && listDepartment.map(
-                  (item: IMockDataDepartment, index: number) => {
-                    return (
-                      <tr key={index}>
-                        <th scope="row">{++index}</th>
-                        <td>{item.department_name}</td>
-                        <td>{item.department_number_person}</td>
-                        <td>{item.department_phone}</td>
-                        <td>{item.department_manager}</td>
-                        <td>{item.department_manager_other}</td>
-                        <td>
-                          <span className={styles.iconEdit} onClick={() => setOpenModalEdit(true)}>
-                            <IconEdit />
-                          </span>
-                          <span className={styles.iconDelete} onClick={() => setOpenModalDelete(true)}> 
-                            <IconDelete />
-                          </span>
-                        </td>
-                      </tr>
-                    )
-                  }
+                {isLoading ? (
+                  <tr className="text-center">
+                    <td colSpan={7}>Chưa có dữ liệu</td>
+                  </tr>
+                ) : (
+                  listDepartment &&
+                  listDepartment.map(
+                    (item: IMockDataDepartment, index: number) => {
+                      return (
+                        <tr key={index}>
+                          <th scope="row">{++index}</th>
+                          <td>{item.department_name}</td>
+                          <td>{item.department_number_person}</td>
+                          <td>{item.department_phone}</td>
+                          <td>{item.department_manager}</td>
+                          <td>{item.department_manager_other}</td>
+                          <td>
+                            <span
+                              className={styles.iconEdit}
+                              onClick={() => setOpenModalEdit(true)}
+                            >
+                              <IconEdit />
+                            </span>
+                            <span
+                              className={styles.iconDelete}
+                              onClick={() => setOpenModalDelete(true)}
+                            >
+                              <IconDelete />
+                            </span>
+                          </td>
+                        </tr>
+                      )
+                    }
+                  )
                 )}
               </tbody>
             </Table>
@@ -86,23 +104,26 @@ export const DepartmentList = () => {
         </CardBody>
       </Card>
       <div className="d-flex justify-content-between">
-      <Limit />
-      <Pagination />
+        <Limit />
+        <Pagination />
       </div>
-      <CustomModal title={'You are Sure'} show={openModalDelete} setShow={setOpenModalDelete}>
-
-      </CustomModal>
-      <CustomModal title={'EDIT DEPARTMENT'} show={openModalEdit} setShow={setOpenModalEdit}>
-        <DepartmentEdit />
-      </CustomModal> 
       <CustomModal
-        title={'ADD DEPARTMENT'}
-        show={openModalCreate}
-        setShow={setOpenModalCreate}
-        clickRightButton ={onHandleCreateDepartment}
+        title={'You are Sure'}
+        show={openModalDelete}
+        setShow={setOpenModalDelete}
+      >aaaa</CustomModal>
+      <CustomModal
+        title={'EDIT DEPARTMENT'}
+        show={openModalEdit}
+        setShow={setOpenModalEdit}
       >
-        <DepartmentAdd />
+        <DepartmentEdit />
       </CustomModal>
+      <DepartmentAdd
+        openModalCreate={openModalCreate}
+        setOpenModalCreate={setOpenModalCreate}
+        refetch={fetchDepartmentList}
+      />
     </>
   )
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NextPage } from 'next'
 import {
   Card,
@@ -11,19 +11,34 @@ import {
 } from 'reactstrap'
 import fetchApi from '~/src/helpers/fetchApi'
 import { LoginGoogle } from '~/src/components/screens/login/LoginGoogle'
+import {  setLocalStorage } from '~/src/helpers/localStorage'
 import styles from '~/styles/components/widgets/login.module.scss'
 
 const Login: NextPage = () => {
+  const [loginAccount, setLoginAccount] = useState({
+    email: '',
+    password: ''
+  })
+  const onChangeValue = (e) => {
+    e.preventDefault()
+    const { name, value } = e.target
+    setLoginAccount((prevState) =>({
+    ...prevState,
+    [name]: value
+
+    }))
+  }
   const onHandleLogin = async(e) => {
     e.preventDefault()
-    let params = {
-      email: 'trangbth@rikkeisoft.com',
-      password: 'trang123'
+    const params = {
+      email: loginAccount.email,
+      password: loginAccount.password,
     }
-    await fetchApi.postLogin(params).then((res) => {
-      console.log(res)
-    })
+  
+    const response = await fetchApi.postLogin(params)
+    setLocalStorage( 'TOKEN', response.access_token)
   }
+
   return (
     <Card className={styles.CardLogin}>
       <CardTitle className={styles.TitleLogin}>LOGIN FORM</CardTitle>
@@ -37,6 +52,8 @@ const Login: NextPage = () => {
             name="email"
             id="exampleEmail"
             placeholder="Email"
+            value={loginAccount.email ||''} 
+            onChange= {onChangeValue}
           />
         </FormGroup>
         <FormGroup className="mt-3">
@@ -48,6 +65,8 @@ const Login: NextPage = () => {
             name="password"
             id="examplePassword"
             placeholder="Password "
+            value={loginAccount.password ||''}
+            onChange= {onChangeValue}
           />
         </FormGroup>
         <Button className={styles.ButtonLogin} active onClick={onHandleLogin}>

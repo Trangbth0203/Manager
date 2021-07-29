@@ -28,7 +28,6 @@ export const UserList = () => {
     fetchUserList()
   }, [params])
 
-   console.log(listUser)
   return (
     <>
       <Card>

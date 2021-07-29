@@ -1,20 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Container, Row, Col } from 'reactstrap'
-import { ToastContainer, toast } from 'react-toastify';
+import Router from 'next/router'
+import { ToastContainer, toast } from 'react-toastify'
 import { Sidebar } from '~/src/components/widgets/Sidebar'
 import { Header } from '~/src/components/widgets/Header'
 import Login from '../../../pages/auth/login'
+import { getLocalStorage } from '~/src/helpers/localStorage'
 
 
 export const Layout = ({ children }) => {
-  const [isLogin, setIsLogin] = useState<boolean>(false)
+  if (typeof window === undefined) {
+    if (!getLocalStorage('TOKEN')) {
+      Router.push('/auth/login')
+    }
+  }
 
   return (
     <>
-      {isLogin ? (
-        <Login />
-      ) : (
-        <div>
+      <div>
+        {/* {!isLogin ? <Login /> : null} */}
         <Header />
           <Row>
             <Col xs="2">
@@ -24,9 +28,8 @@ export const Layout = ({ children }) => {
               <Container className="pt-5">{children}</Container>
             </Col>
           </Row>
-          <ToastContainer />
-        </div>
-      )}
+        <ToastContainer />
+      </div>
     </>
   )
 }
