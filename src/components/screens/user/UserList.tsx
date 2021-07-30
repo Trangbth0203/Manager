@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Table, Card, CardText, CardBody, CardTitle, Button } from 'reactstrap'
+import { toast } from 'react-toastify'
 import fetchApi from '~/src/helpers/fetchApi'
-import { IMockDataUsers } from '~/src/models/users'
+import { IUsers } from '~/src/models/users'
 import { IconEdit, IconDelete } from '~/src/components/elements'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { UserAdd } from '~/src/components/screens/user/UserAdd'
@@ -28,6 +29,21 @@ export const UserList = () => {
     fetchUserList()
   }, [params])
 
+  const onDeleteUser = async (id: string) => {
+    if (confirm('Bạn có muốn xóa user này không')) {
+      try {
+        const response = await fetchApi.deleteUser(id)
+        if (!response.status) {
+          toast.error('Xóa thất bại', { position: 'top-right' })
+        }
+        toast.success('Xóa thành công', { position: 'top-right' })
+        fetchUserList()
+      } catch (error) {
+        console.log('error', error)
+      }
+    }
+  }
+
   return (
     <>
       <Card>
@@ -48,18 +64,19 @@ export const UserList = () => {
                 </tr>
               </thead>
               <tbody>
-                {listUser && listUser.map((item: IMockDataUsers, index: number) => {
+                {listUser && listUser.map((item: IUsers, index: number) => {
                   return (
                     <tr key={index}>
                       <th scope="row">{++index}</th>
                       <td>{item.role_id}</td>
                       <td>{item.name}</td>
                       <td>{item.email}</td>
+                  
                       <td>
                         <span className={styles.iconEdit}  onClick={() => setOpenModalEdit(true)}>
                         <IconEdit />
                         </span>
-                        <span className={styles.iconDelete}   onClick={() => setOpenModalDelete(true)}>
+                        <span className={styles.iconDelete} onClick={() => onDeleteUser(item.id)}>
                           <IconDelete />
                         </span>
                       </td>
@@ -82,9 +99,7 @@ export const UserList = () => {
       <CustomModal title={'EDIT USER'} show={openModalEdit} setShow={setOpenModalEdit}>
         <UserEdit />
       </CustomModal> 
-      <CustomModal title={'ADD  NEWS USER'} show={openModalCreate} setShow={setOpenModalCreate}>
-        <UserAdd />
-      </CustomModal>
+      <UserAdd openModalCreate={openModalCreate} setOpenModalCreate={setOpenModalCreate} refetch={fetchUserList} />
     </>
   )
 }

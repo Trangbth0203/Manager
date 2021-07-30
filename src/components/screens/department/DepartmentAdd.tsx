@@ -10,40 +10,50 @@ interface Props {
   refetch?: () => void
 }
 
-export const DepartmentAdd: FC<Props> = ({ openModalCreate, setOpenModalCreate, refetch }) => {
+export const DepartmentAdd: FC<Props> = ({
+  openModalCreate,
+  setOpenModalCreate,
+  refetch,
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const initialError = {
     department_name: '',
     department_number_person: '',
     department_phone: '',
     department_manager: '',
-    department_manager_other:''
+    department_manager_other: '',
   }
   const initialInput = {
     department_name: '',
     department_number_person: '',
     department_phone: '',
     department_manager: '',
-    department_manager_other:''
+    department_manager_other: '',
   }
   const [error, setError] = useState(initialError)
   const [inputValues, setInputValues] = useState(initialInput)
   const onChangeValue = (e) => {
     e.preventDefault()
-    const { name, value} = e.target
+    const { name, value } = e.target
     setInputValues((preState) => ({
       ...preState,
-      [name]: value
+      [name]: value,
     }))
   }
 
   const onHandleCreateDepartment = async () => {
     const formData = new FormData()
     formData.set('department_name', inputValues.department_name || '')
-    formData.set('department_number_person', inputValues.department_number_person || '')
+    formData.set(
+      'department_number_person',
+      inputValues.department_number_person || ''
+    )
     formData.set('department_phone', inputValues.department_phone || '')
     formData.set('department_manager', inputValues.department_manager || '')
-    formData.set('department_manager_other', inputValues.department_manager_other || '')
+    formData.set(
+      'department_manager_other',
+      inputValues.department_manager_other || ''
+    )
     formData.set('created_by', 'SYSTEM')
     formData.set('updated_by', 'SYSTEM')
 
@@ -84,21 +94,25 @@ export const DepartmentAdd: FC<Props> = ({ openModalCreate, setOpenModalCreate, 
     >
       <Form>
         <FormGroup className="mt-3">
-          <Label className="mb-1" for="exampleSelect">DepartmentName</Label>
+          <Label className="mb-1" for="exampleSelect">
+            DepartmentName
+          </Label>
           <Input
-              type="text"
-              name="department_name"
-              id="exampleDivision"
-              placeholder="Division"
-              onChange= {onChangeValue}
-            />
-            {error && error.department_name ? (
-              <p className="text-danger">{error.department_name}</p>
-            ) : null}
+            type="text"
+            name="department_name"
+            id="exampleDivision"
+            placeholder="Division"
+            onChange={onChangeValue}
+          />
+          {error && error.department_name ? (
+            <p className="text-danger">{error.department_name}</p>
+          ) : null}
         </FormGroup>
         <div className="d-flex justify-content-between">
           <FormGroup className="mt-3">
-            <Label className="mb-1" for="exampleNumberPerson">Number Person</Label>
+            <Label className="mb-1" for="exampleNumberPerson">
+              Number Person
+            </Label>
             <Input
               type="number"
               name="department_number_person"
@@ -111,13 +125,15 @@ export const DepartmentAdd: FC<Props> = ({ openModalCreate, setOpenModalCreate, 
             ) : null}
           </FormGroup>
           <FormGroup className="mt-3">
-            <Label className="mb-1" for="exampleOtherPhone">Phone</Label>
+            <Label className="mb-1" for="exampleOtherPhone">
+              Phone
+            </Label>
             <Input
               type="text"
               name="department_phone"
               id="exampleOtherPhone"
               placeholder="Phone"
-              onChange= {onChangeValue}
+              onChange={onChangeValue}
             />
             {error && error.department_phone ? (
               <p className="text-danger">{error.department_phone}</p>
@@ -126,7 +142,9 @@ export const DepartmentAdd: FC<Props> = ({ openModalCreate, setOpenModalCreate, 
         </div>
         <div className="d-flex justify-content-between">
           <FormGroup className="mt-3">
-            <Label className="mb-1" for="exampleMainManager">Main Manager</Label>
+            <Label className="mb-1" for="exampleMainManager">
+              Main Manager
+            </Label>
             <Input
               type="text"
               name="department_manager"
@@ -139,7 +157,9 @@ export const DepartmentAdd: FC<Props> = ({ openModalCreate, setOpenModalCreate, 
             ) : null}
           </FormGroup>
           <FormGroup className="mt-3">
-            <Label className="mb-1" for="exampleOtherManagers">Other Managers</Label>
+            <Label className="mb-1" for="exampleOtherManagers">
+              Other Managers
+            </Label>
             <Input
               type="text"
               name="department_manager_other"

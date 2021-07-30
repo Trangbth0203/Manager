@@ -5,17 +5,17 @@ export const getLocalStorage = (key: string) => {
     }
     return null
   } catch (error) {
-    console.log(`${error}`)
+    return null
   }
 }
-export const setLocalStorage = (key, value: string) => {
+
+export const setLocalStorage = (key: string, value: string) => {
   try {
     if (typeof window !== 'undefined') {
       return localStorage.setItem(key, value)
     }
     return null
   } catch (error) {
-    console.log(`${error}`)
+    return null
   }
 }
-

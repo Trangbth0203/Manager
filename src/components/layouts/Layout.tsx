@@ -4,8 +4,7 @@ import Router from 'next/router'
 import { ToastContainer, toast } from 'react-toastify'
 import { Sidebar } from '~/src/components/widgets/Sidebar'
 import { Header } from '~/src/components/widgets/Header'
-import Login from '../../../pages/auth/login'
-import { getLocalStorage } from '~/src/helpers/localStorage'
+import { getLocalStorage, st } from '~/src/helpers/localStorage'
 
 
 export const Layout = ({ children }) => {

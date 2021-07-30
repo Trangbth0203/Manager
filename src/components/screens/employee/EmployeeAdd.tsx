@@ -47,10 +47,10 @@ export const EmployeeAdd: FC<Props> = ({
   }
 
   const fetchDepartment = async () => {
-    const response = await fetchApi.getListDepartment({ })
+    const response = await fetchApi.getListDepartment({})
     setListDepartment(response.data)
   }
-  
+
   useEffect(() => {
     fetchDepartment()
   }, [])
@@ -92,8 +92,6 @@ export const EmployeeAdd: FC<Props> = ({
     setInputValues(initialInput)
   }
 
-  console.log('----', inputValues)
-
   return (
     <CustomModal
       title={'ADD Employee'}
@@ -108,13 +106,21 @@ export const EmployeeAdd: FC<Props> = ({
           <Label className="mb-1" for="exampleSelect">
             Department name
           </Label>
-          <Input type="select" value={inputValues.department_id} name="department_id" onChange={onChangeValue}>
+          <Input
+            type="select"
+            value={inputValues.department_id}
+            name="department_id"
+            onChange={onChangeValue}
+          >
             <option value={0}>Choose Department</option>
             {listDepartment.map((item, index: number) => {
-              return (<option key={index} value={item.id}>{item.department_name}</option>)
+              return (
+                <option key={index} value={item.id}>
+                  {item.department_name}
+                </option>
+              )
             })}
           </Input>
-
           {error && error.department_id ? (
             <p className="text-danger">{error.department_id}</p>
           ) : null}
@@ -152,21 +158,21 @@ export const EmployeeAdd: FC<Props> = ({
           ) : null}
         </FormGroup>
         <FormGroup className="mt-3">
-            <Label className="mb-1" for="exampleFirstName">
-              Age
-            </Label>
-            <Input
-              type="text"
-              name="age"
-              id="exampleFistName"
-              value={inputValues.age || ''}
-              placeholder="with Age"
-              onChange={onChangeValue}
-            />
-            {error && error.age ? (
-              <p className="text-danger">{error.age}</p>
-            ) : null}
-          </FormGroup>
+          <Label className="mb-1" for="exampleFirstName">
+            Age
+          </Label>
+          <Input
+            type="text"
+            name="age"
+            id="exampleFistName"
+            value={inputValues.age || ''}
+            placeholder="with Age"
+            onChange={onChangeValue}
+          />
+          {error && error.age ? (
+            <p className="text-danger">{error.age}</p>
+          ) : null}
+        </FormGroup>
         <div className="d-flex justify-content-between">
           <FormGroup className="mt-3">
             <Label className="mb-1" for="exampleFirstName">
@@ -201,15 +207,27 @@ export const EmployeeAdd: FC<Props> = ({
             ) : null}
           </FormGroup>
         </div>
-
         <Label className="mb-1" for="exampleEmail">
-          Gender:{' '}
+          Gender:
         </Label>
         <div className="d-flex justify-content-start ">
           <FormGroup>
             <Label style={{ marginRight: 25 }}>
-              <Input checked type="radio" name="gender" value={"1"} onChange={onChangeValue} /> Nam
-              <Input type="radio" name="gender" value={"2"} onChange={onChangeValue} /> Nữ
+              <Input
+                checked
+                type="radio"
+                name="gender"
+                value={'1'}
+                onChange={onChangeValue}
+              />{' '}
+              Nam
+              <Input
+                type="radio"
+                name="gender"
+                value={'2'}
+                onChange={onChangeValue}
+              />{' '}
+              Nữ
             </Label>
           </FormGroup>
         </div>

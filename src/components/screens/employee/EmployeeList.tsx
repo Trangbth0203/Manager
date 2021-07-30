@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Table, Card, CardText, CardBody, CardTitle, Button } from 'reactstrap'
 import dayjs from 'dayjs'
-import { IMockDataEmployees, GENDER } from '~/src/models/employees'
+import { GENDER } from '~/src/models/employees'
+import { toast } from 'react-toastify'
 import fetchApi from '~/src/helpers/fetchApi'
+import { IEmployees} from '~/src/models/employees'
 import { IconEdit, IconDelete } from '~/src/components/elements'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { EmployeeAdd } from '~/src/components/screens/employee/EmployeeAdd'
@@ -31,6 +33,20 @@ export const EmployeeList = () => {
   useEffect(() => {
     fetchEmployeeList()
   }, [params])
+  const onDeleteEmployee = async (id: string) => {
+    if (confirm('Bạn có muốn xóa user này không')) {
+      try {
+        const response = await fetchApi.deleteEmployee(id)
+        if (!response.status) {
+          toast.error('Xóa thất bại', { position: 'top-right' })
+        }
+        toast.success('Xóa thành công', { position: 'top-right' })
+        fetchEmployeeList()
+      } catch (error) {
+        console.log('error', error)
+      }
+    }
+  }
 
   return (
     <>
@@ -60,7 +76,7 @@ export const EmployeeList = () => {
               <tbody>
                 {listEmployee &&
                   listEmployee.map(
-                    (item: IMockDataEmployees, index: number) => {
+                    (item: IEmployees, index: number) => {
                       return (
                         <tr key={index}>
                           <th scope="row">{++index}</th>
@@ -80,7 +96,7 @@ export const EmployeeList = () => {
                             </span>
                             <span
                               className={styles.iconDelete}
-                              onClick={() => setOpenModalDelete(true)}
+                              onClick={() => onDeleteEmployee(item.id)}
                             >
                               <IconDelete />
                             </span>

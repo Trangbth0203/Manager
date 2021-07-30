@@ -11,32 +11,32 @@ import {
 } from 'reactstrap'
 import fetchApi from '~/src/helpers/fetchApi'
 import { LoginGoogle } from '~/src/components/screens/login/LoginGoogle'
-import {  setLocalStorage } from '~/src/helpers/localStorage'
+import { setLocalStorage } from '~/src/helpers/localStorage'
 import styles from '~/styles/components/widgets/login.module.scss'
+
+const KEY_STORE = 'TOKEN'
 
 const Login: NextPage = () => {
   const [loginAccount, setLoginAccount] = useState({
     email: '',
-    password: ''
+    password: '',
   })
   const onChangeValue = (e) => {
     e.preventDefault()
     const { name, value } = e.target
-    setLoginAccount((prevState) =>({
-    ...prevState,
-    [name]: value
-
+    setLoginAccount((prevState) => ({
+      ...prevState,
+      [name]: value,
     }))
   }
-  const onHandleLogin = async(e) => {
+  const onHandleLogin = async (e) => {
     e.preventDefault()
     const params = {
       email: loginAccount.email,
       password: loginAccount.password,
     }
-  
     const response = await fetchApi.postLogin(params)
-    setLocalStorage( 'TOKEN', response.access_token)
+    setLocalStorage(KEY_STORE, response.access_token)
   }
 
   return (
@@ -52,8 +52,8 @@ const Login: NextPage = () => {
             name="email"
             id="exampleEmail"
             placeholder="Email"
-            value={loginAccount.email ||''} 
-            onChange= {onChangeValue}
+            value={loginAccount.email || ''}
+            onChange={onChangeValue}
           />
         </FormGroup>
         <FormGroup className="mt-3">
@@ -65,8 +65,8 @@ const Login: NextPage = () => {
             name="password"
             id="examplePassword"
             placeholder="Password "
-            value={loginAccount.password ||''}
-            onChange= {onChangeValue}
+            value={loginAccount.password || ''}
+            onChange={onChangeValue}
           />
         </FormGroup>
         <Button className={styles.ButtonLogin} active onClick={onHandleLogin}>

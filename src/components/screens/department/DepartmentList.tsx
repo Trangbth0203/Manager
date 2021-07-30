@@ -10,6 +10,8 @@ import {
 } from 'reactstrap'
 import { IMockDataDepartment } from '~/src/models/departments'
 import fetchApi from '~/src/helpers/fetchApi'
+import { toast } from 'react-toastify'
+import { IDepartments } from '~/src/models/departments'
 import { IconEdit, IconDelete } from '~/src/components/elements'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { DepartmentAdd } from '~/src/components/screens/department/DepartmentAdd'
@@ -19,7 +21,7 @@ import { Limit } from '~/src/components/elements/limit'
 import styles from '~/styles/pages/departments.module.scss'
 
 export const DepartmentList = () => {
-  const [params, setParams] = useState({})
+  const [params, setParams] = useState({ limit: 10 })
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [listDepartment, setListDepartment] = useState([])
   const [openModalCreate, setOpenModalCreate] = useState<boolean>(false)
@@ -28,6 +30,7 @@ export const DepartmentList = () => {
 
   const fetchDepartmentList = async () => {
     await fetchApi.getListDepartment({ params }).then((res) => {
+      console.log(res)
       if (res && res.data) {
         setListDepartment(res.data)
         setIsLoading(false)
@@ -38,6 +41,20 @@ export const DepartmentList = () => {
   useEffect(() => {
     fetchDepartmentList()
   }, [params])
+  const onDeleDepartment = async (id: string) => {
+    if (confirm('Bạn có muốn xóa user này không')) {
+      try {
+        const response = await fetchApi.deleteDepartment(id)
+        if (!response.status) {
+          toast.error('Xóa thất bại', { position: 'top-right' })
+        }
+        toast.success('Xóa thành công', { position: 'top-right' })
+        fetchDepartmentList()
+      } catch (error) {
+        console.log('error', error)
+      }
+    }
+  }
 
   return (
     <>
@@ -88,7 +105,7 @@ export const DepartmentList = () => {
                             </span>
                             <span
                               className={styles.iconDelete}
-                              onClick={() => setOpenModalDelete(true)}
+                              onClick={() => onDeleDepartment (item.id)}
                             >
                               <IconDelete />
                             </span>
