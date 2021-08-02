@@ -17,6 +17,7 @@ export const EmployeeAdd: FC<Props> = ({
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [listDepartment, setListDepartment] = useState([])
+  const [listUser, setListUser] = useState([])
   const initialError = {
     department_id: '',
     user_id: '',
@@ -50,9 +51,14 @@ export const EmployeeAdd: FC<Props> = ({
     const response = await fetchApi.getListDepartment({})
     setListDepartment(response.data)
   }
+  const fetchUser = async () => {
+     const response = await fetchApi.getListUser({})
+     setListUser(response.data)
+  }
 
   useEffect(() => {
     fetchDepartment()
+    fetchUser()
   }, [])
 
   const onHandleCreateEmployee = async () => {
@@ -113,7 +119,7 @@ export const EmployeeAdd: FC<Props> = ({
             onChange={onChangeValue}
           >
             <option value={0}>Choose Department</option>
-            {listDepartment.map((item, index: number) => {
+            {listDepartment && listDepartment.length > 0 && listDepartment.map((item, index: number) => {
               return (
                 <option key={index} value={item.id}>
                   {item.department_name}
@@ -126,19 +132,26 @@ export const EmployeeAdd: FC<Props> = ({
           ) : null}
         </FormGroup>
         <FormGroup className="mt-3">
-          <Label className="mb-1" for="exampleSelect">
+        <Label className="mb-1" for="exampleSelect">
             Email
           </Label>
           <Input
-            type="text"
+            type="select"
+            value={inputValues.user_id}
             name="user_id"
-            id="Department"
-            value={inputValues.user_id || ''}
-            placeholder="with Department"
             onChange={onChangeValue}
-          />
-          {error && error.user_id ? (
-            <p className="text-danger">{error.user_id}</p>
+          >
+            <option value={0}>Choose Email</option>
+            {listUser && listUser.length > 0 && listUser.map((item, index: number) => {
+              return (
+                <option key={index} value={item.id}>
+                  {item.email}
+                </option>
+              )
+            })}
+          </Input>
+          {error && error.department_id ? (
+            <p className="text-danger">{error.email}</p>
           ) : null}
         </FormGroup>
         <FormGroup className="mt-3">
@@ -207,7 +220,7 @@ export const EmployeeAdd: FC<Props> = ({
             ) : null}
           </FormGroup>
         </div>
-        <Label className="mb-1" for="exampleEmail">
+        <Label className="mt-3" for="exampleEmail">
           Gender:
         </Label>
         <div className="d-flex justify-content-start ">

@@ -10,3 +10,5 @@ export interface IMenu {
   name: string
   href: string
 }
+
+export const DEFAULT_CURRENT_PAGE = 1

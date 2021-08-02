@@ -6,41 +6,46 @@ import {
   CardBody,
   CardTitle,
   Button,
-  Spinner,
 } from 'reactstrap'
-import { IMockDataDepartment } from '~/src/models/departments'
+import { IDepartment } from '~/src/models/departments'
+import { DEFAULT_CURRENT_PAGE } from '~/src/models'
 import fetchApi from '~/src/helpers/fetchApi'
 import { toast } from 'react-toastify'
-import { IDepartments } from '~/src/models/departments'
 import { IconEdit, IconDelete } from '~/src/components/elements'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { DepartmentAdd } from '~/src/components/screens/department/DepartmentAdd'
 import { DepartmentEdit } from '~/src/components/screens/department/DepartmentEdit'
-import { Pagination } from '~/src/components/elements/pagination'
-import { Limit } from '~/src/components/elements/limit'
+import Pagination from '~/src/components/elements/pagination'
+import { Search } from '~/src/components/elements/search'
 import styles from '~/styles/pages/departments.module.scss'
 
 export const DepartmentList = () => {
-  const [params, setParams] = useState({ limit: 10 })
+  const [params, setParams] = useState({ first: 10, page: 1, keyword: '' })
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [idUpdate, setIdUpdate] = useState<string>('')
   const [listDepartment, setListDepartment] = useState([])
+  const [totalItems, setTotalItems] = useState([])
   const [openModalCreate, setOpenModalCreate] = useState<boolean>(false)
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false)
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false)
 
   const fetchDepartmentList = async () => {
-    await fetchApi.getListDepartment({ params }).then((res) => {
-      console.log(res)
-      if (res && res.data) {
-        setListDepartment(res.data)
+    try {
+      const response = await fetchApi.getListDepartment({ params })
+      if (response && response.data) {
+        setListDepartment(response.data)
         setIsLoading(false)
       }
-    })
+      setTotalItems(response.total)
+    } catch (error) {
+      console.log('error', error)
+    }
   }
 
   useEffect(() => {
     fetchDepartmentList()
   }, [params])
+
   const onDeleDepartment = async (id: string) => {
     if (confirm('Bạn có muốn xóa user này không')) {
       try {
@@ -56,9 +61,31 @@ export const DepartmentList = () => {
     }
   }
 
+  const onPaginate = (value: number) => {
+    setParams({ ...params, page: value })
+  }
+
+  const onChangeLimit = (value: number) => {
+    setParams({ ...params, first: value })
+  }
+
+  const onChangeValue = (value: string) => {
+    setTimeout(() => {
+      setParams({ ...params, keyword: value })
+    }, 500)
+  }
+
+  let updateItem = {}
+  if (idUpdate) {
+    const updateIndex = listDepartment.findIndex((item) => item.id === idUpdate)
+    if (updateIndex > -1) {
+      updateItem = listDepartment[updateIndex]
+    }
+  }
+
   return (
-    <>
-      <Card className="mt-3">
+    <div>
+      <Card>
         <CardBody>
           <div className="d-flex justify-content-between">
             <CardTitle tag="h5">Departments</CardTitle>
@@ -66,6 +93,7 @@ export const DepartmentList = () => {
               CREATE
             </Button>
           </div>
+          <Search onChangeValue={onChangeValue} />
           <CardText>
             <Table bordered className="mt-3">
               <thead>
@@ -87,19 +115,22 @@ export const DepartmentList = () => {
                 ) : (
                   listDepartment &&
                   listDepartment.map(
-                    (item: IMockDataDepartment, index: number) => {
+                    (item: IDepartment, index: number) => {
                       return (
                         <tr key={index}>
-                          <th scope="row">{++index}</th>
+                          <th scope="row">{++index + params.first * (params.page - 1)}</th>
                           <td>{item.department_name}</td>
-                          <td>{item.department_number_person}</td>
+                          <td>{item.number_person}</td>
                           <td>{item.department_phone}</td>
                           <td>{item.department_manager}</td>
                           <td>{item.department_manager_other}</td>
                           <td>
                             <span
                               className={styles.iconEdit}
-                              onClick={() => setOpenModalEdit(true)}
+                              onClick={() => {
+                                setOpenModalEdit(true)
+                                setIdUpdate(item.id)
+                              }}
                             >
                               <IconEdit />
                             </span>
@@ -120,27 +151,32 @@ export const DepartmentList = () => {
           </CardText>
         </CardBody>
       </Card>
-      <div className="d-flex justify-content-between">
-        <Limit />
-        <Pagination />
-      </div>
+      <Pagination
+        isLoading={isLoading}
+        currentPage={Number(params.page)}
+        perPage={Number(params.first)}
+        totalItems={Number(totalItems)}
+        onChangeLimit={onChangeLimit}
+        onPaginate={onPaginate}
+      />
       <CustomModal
         title={'You are Sure'}
         show={openModalDelete}
         setShow={setOpenModalDelete}
       >aaaa</CustomModal>
-      <CustomModal
-        title={'EDIT DEPARTMENT'}
-        show={openModalEdit}
-        setShow={setOpenModalEdit}
-      >
-        <DepartmentEdit />
-      </CustomModal>
+      {idUpdate && (
+        <DepartmentEdit
+          updateItem={updateItem}
+          openModalEdit={openModalEdit}
+          setOpenModalEdit={setOpenModalEdit}
+          refetch={fetchDepartmentList}
+        />
+      )}
       <DepartmentAdd
         openModalCreate={openModalCreate}
         setOpenModalCreate={setOpenModalCreate}
         refetch={fetchDepartmentList}
       />
-    </>
+    </div>
   )
 }

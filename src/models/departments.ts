@@ -1,6 +1,7 @@
-export interface IDepartments {
+export interface IDepartment {
+  id: string
   department_name: string
-  department_number_person: number
+  number_person: number
   department_phone: string
   department_manager: string
   department_manager_other: string

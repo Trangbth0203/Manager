@@ -2,20 +2,23 @@ import React, { useEffect, useState } from 'react'
 import { Table, Card, CardText, CardBody, CardTitle, Button } from 'reactstrap'
 import dayjs from 'dayjs'
 import { GENDER } from '~/src/models/employees'
+import { DEFAULT_CURRENT_PAGE } from '~/src/models'
 import { toast } from 'react-toastify'
 import fetchApi from '~/src/helpers/fetchApi'
-import { IEmployees} from '~/src/models/employees'
+import { IEmployee } from '~/src/models/employees'
 import { IconEdit, IconDelete } from '~/src/components/elements'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { EmployeeAdd } from '~/src/components/screens/employee/EmployeeAdd'
 import { EmployeeEdit } from '~/src/components/screens/employee/EmployeeEdit'
-import { Pagination } from '~/src/components/elements/pagination'
-import { Limit } from '~/src/components/elements/limit'
+import Pagination from '~/src/components/elements/pagination'
+import { Search } from '~/src/components/elements/search'
 import styles from '~/styles/pages/employees.module.scss'
 
 export const EmployeeList = () => {
-  const [params, setPrams] = useState({})
+  const [params, setParams] = useState({ first: 10, page: 1, keyword: '' })
+  const [totalItem, setTotalItem] = useState()
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [idUpdate, setIdUpdate] = useState<string>('')
   const [listEmployee, setListEmployee] = useState([])
   const [openModalCreate, setOpenModalCreate] = useState<boolean>(false)
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false)
@@ -27,12 +30,14 @@ export const EmployeeList = () => {
         setListEmployee(res.data)
         setIsLoading(false)
       }
+      setTotalItem(res.total)
     })
   }
 
   useEffect(() => {
     fetchEmployeeList()
   }, [params])
+
   const onDeleteEmployee = async (id: string) => {
     if (confirm('Bạn có muốn xóa user này không')) {
       try {
@@ -48,6 +53,28 @@ export const EmployeeList = () => {
     }
   }
 
+  const onChangeLimit = (value: number) => {
+    setParams({ ...params, first: value, page: DEFAULT_CURRENT_PAGE })
+  }
+
+  const onPaginate = (value: number) => {
+    setParams({ ...params, page: value })
+  }
+
+  const onChangeValue = (value: string) => {
+    setTimeout(() => {
+      setParams({ ...params, keyword: value })
+    }, 500)
+  }
+
+  let updateItem = {}
+  if (idUpdate) {
+    const updateIndex = listEmployee.findIndex((item) => item.id === idUpdate)
+    if (updateIndex > -1) {
+      updateItem = listEmployee[updateIndex]
+    }
+  }
+
   return (
     <>
       <Card>
@@ -58,6 +85,7 @@ export const EmployeeList = () => {
               CREATE
             </Button>
           </div>
+          <Search onChangeValue={onChangeValue} />
           <CardText>
             <Table bordered className="mt-3">
               <thead>
@@ -75,59 +103,68 @@ export const EmployeeList = () => {
               </thead>
               <tbody>
                 {listEmployee &&
-                  listEmployee.map(
-                    (item: IEmployees, index: number) => {
-                      return (
-                        <tr key={index}>
-                          <th scope="row">{++index}</th>
-                          <td>{item.department_id}</td>
-                          <td>{item.user_id}</td>
-                          <td>{dayjs(item.birth_date).format('MM-DD-YYYY')}</td>
-                          <td>{item.first_name}</td>
-                          <td>{item.last_name}</td>
-                          <td>{item.age}</td>
-                          <td>{GENDER[Number(item.gender)]}</td>
-                          <td>
-                            <span
-                              className={styles.iconEdit}
-                              onClick={() => setOpenModalEdit(true)}
-                            >
-                              <IconEdit />
-                            </span>
-                            <span
-                              className={styles.iconDelete}
-                              onClick={() => onDeleteEmployee(item.id)}
-                            >
-                              <IconDelete />
-                            </span>
-                          </td>
-                        </tr>
-                      )
-                    }
-                  )}
+                  listEmployee.map((item: IEmployee, index: number) => {
+                    return (
+                      <tr key={index}>
+                        <th scope="row">
+                          {++index + params.first * (params.page - 1)}
+                        </th>
+                        <td>{item.department_name}</td>
+                        <td>{item.employee_email}</td>
+                        <td>{dayjs(item.birth_date).format('MM-DD-YYYY')}</td>
+                        <td>{item.first_name}</td>
+                        <td>{item.last_name}</td>
+                        <td>{item.age}</td>
+                        <td>{GENDER[item.gender]}</td>
+                        <td>
+                          <span
+                            className={styles.iconEdit}
+                            onClick={() => {
+                              setOpenModalEdit(true)
+                              setIdUpdate(item.id)
+                            }}
+                          >
+                            <IconEdit />
+                          </span>
+                          <span
+                            className={styles.iconDelete}
+                            onClick={() => onDeleteEmployee(item.id)}
+                          >
+                            <IconDelete />
+                          </span>
+                        </td>
+                      </tr>
+                    )
+                  })}
               </tbody>
             </Table>
           </CardText>
         </CardBody>
       </Card>
-      <div className="d-flex justify-content-between">
-        <Limit />
-        <Pagination />
-      </div>
+      <Pagination
+        currentPage={params.page}
+        totalItems={totalItem}
+        perPage={params.first}
+        onPaginate={onPaginate}
+        onChangeLimit={onChangeLimit}
+        isLoading={isLoading}
+      />
       <CustomModal
         title={'You are Sure'}
         show={openModalDelete}
         setShow={setOpenModalDelete}
       >
-      aaa</CustomModal>
-      <CustomModal
-        title={'EDIT EMPLOYEE'}
-        show={openModalEdit}
-        setShow={setOpenModalEdit}
-      >
-        <EmployeeEdit />
+        Xóa nhân viên
       </CustomModal>
-      <EmployeeAdd 
+      {idUpdate ? (
+        <EmployeeEdit
+          updateItem={updateItem}
+          openModalEdit={openModalEdit}
+          setOpenModalEdit={setOpenModalEdit}
+          fetchEmployeeList={fetchEmployeeList}
+        />
+      ) : null}
+      <EmployeeAdd
         openModalCreate={openModalCreate}
         setOpenModalCreate={setOpenModalCreate}
         refetch={fetchEmployeeList}

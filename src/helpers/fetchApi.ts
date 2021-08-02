@@ -1,8 +1,8 @@
 import { http } from './http'
 
 export default class fetchApi {
-  static async getListDepartment(params) {
-    return await http.get('/v1/department', params)
+  static getListDepartment(params) {
+    return http.get('/v1/department', params)
   }
   static async postCreateDepartment(params) {
     return await http.post('/v1/department', params)
@@ -30,14 +30,20 @@ export default class fetchApi {
   }
   static deleteUser(id) {
     return http.delete(`/v1/user/${id}`)
-}
-static deleteDepartment(id) {
-  return http.delete(`/v1/department/${id}`)
-}
-static deleteEmployee(id) {
-  return http.delete(`/v1/employee/${id}`)
-}
-static updateDepartment(id) {
-  return http.put(`/v1/department/${id}`)
-}
+  }
+  static deleteDepartment(id) {
+    return http.delete(`/v1/department/${id}`)
+  }
+  static deleteEmployee(id) {
+    return http.delete(`/v1/employee/${id}`)
+  }
+  static updateDepartment(id, params, config) {
+    return http.put(`/v1/department/${id}`, params, config)
+  }
+  static updateEmployee(id, params, config) {
+    return http.put(`/v1/employee/${id}`, params, config)
+  }
+  static updateUser(id, params, config) {
+    return http.put(`/v1/user/${id}`, params, config)
+  }
 }

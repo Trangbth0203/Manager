@@ -1,11 +1,14 @@
-export interface IEmployees {
-  department_id: string
-  user_id: string
-  birth_date: string
-  first_name: string
-  last_name: string
-  age: number
-  gender: number
+export interface IEmployee {
+  id?: string
+  department_id?: string
+  department_name?: string
+  user_id?: string
+  employee_email?: string
+  birth_date?: string
+  first_name?: string
+  last_name?: string
+  age?: number
+  gender?: number
 }
 
 // export const MOCK_DATA_EMPLOYEE: IMockDataEmployees[] = [
@@ -38,4 +41,7 @@ export interface IEmployees {
 //   },
 // ]
 
-export const GENDER = ['Nam', 'Nữ']
+export const GENDER = {
+  1: 'Nam',
+  2: 'Nữ'
+}
