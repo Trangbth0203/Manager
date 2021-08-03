@@ -1,26 +1,20 @@
 import React, { useState } from 'react'
-import { NextPage } from 'next'
-import {
-  Card,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Button,
-  CardTitle,
-} from 'reactstrap'
+import { Form, FormGroup, Label, Input, Button, CardTitle, Card } from 'reactstrap'
+import { useRouter } from 'next/router'
 import fetchApi from '~/src/helpers/fetchApi'
 import { LoginGoogle } from '~/src/components/screens/login/LoginGoogle'
 import { setLocalStorage } from '~/src/helpers/localStorage'
 import styles from '~/styles/components/widgets/login.module.scss'
 
-const KEY_STORE = 'TOKEN'
-
-const Login: NextPage = () => {
+export const LoginForm = ({ setIsLogin }) => {
+  const router = useRouter()
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const [loginAccount, setLoginAccount] = useState({
     email: '',
     password: '',
   })
+
   const onChangeValue = (e) => {
     e.preventDefault()
     const { name, value } = e.target
@@ -29,14 +23,32 @@ const Login: NextPage = () => {
       [name]: value,
     }))
   }
+
   const onHandleLogin = async (e) => {
     e.preventDefault()
-    const params = {
+    let params = {
       email: loginAccount.email,
       password: loginAccount.password,
     }
-    const response = await fetchApi.postLogin(params)
-    setLocalStorage(KEY_STORE, response.access_token)
+    setIsLoading(true)
+    try {
+      const response = await fetchApi.postLogin(params)
+      if (!response.status) {
+        setIsLoading(false)
+      }
+      const userInfo = await fetchApi.getMe({ params: { email: response.email } })
+      if (!userInfo.status) {
+        setIsLoading(false)
+      }
+      setIsLogin(true)
+      setLocalStorage('IS_LOGIN', JSON.stringify(userInfo))
+      setTimeout(() => {
+        router.replace({ pathname: '/departments' })
+      }, 500)
+    } catch (error) {
+      setIsLoading(false)
+      setError(error.message)
+    }
   }
 
   return (
@@ -51,10 +63,14 @@ const Login: NextPage = () => {
             type="email"
             name="email"
             id="exampleEmail"
+            required
             placeholder="Email"
             value={loginAccount.email || ''}
             onChange={onChangeValue}
           />
+          {error ? (
+            <span className="text-danger">{error}</span>
+          ) : null}
         </FormGroup>
         <FormGroup className="mt-3">
           <Label className="mb-1" for="examplePassword">
@@ -63,6 +79,7 @@ const Login: NextPage = () => {
           <Input
             type="password"
             name="password"
+            required
             id="examplePassword"
             placeholder="Password "
             value={loginAccount.password || ''}
@@ -70,7 +87,7 @@ const Login: NextPage = () => {
           />
         </FormGroup>
         <Button className={styles.ButtonLogin} active onClick={onHandleLogin}>
-          Log In
+          {isLoading ? 'Loading' : 'Log In'}
         </Button>
       </Form>
       <div className="mt-3">
@@ -79,5 +96,3 @@ const Login: NextPage = () => {
     </Card>
   )
 }
-
-export default Login

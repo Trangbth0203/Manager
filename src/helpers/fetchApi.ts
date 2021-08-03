@@ -22,6 +22,9 @@ export default class fetchApi {
   static async postDepartment(params) {
     return await http.post('/v1/department', params)
   }
+  static getMe(params) {
+    return http.get('/v1/me', params)
+  }
   static postCreateUser(params) {
     return http.post('/v1/user', params)
   }

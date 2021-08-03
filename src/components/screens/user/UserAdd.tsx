@@ -75,7 +75,7 @@ export const UserAdd = ({ openModalCreate, setOpenModalCreate, refetch }) => {
     >
       
     <Form>
-      <FormGroup className="mt-3">
+      {/* <FormGroup className="mt-3">
         <Label className="mb-1" for="exampleEmail">RoleName</Label>
         <Input
           type="select"
@@ -92,7 +92,7 @@ export const UserAdd = ({ openModalCreate, setOpenModalCreate, refetch }) => {
         {error && error.role_id ? (
           <span className="text-danger">{error.role_id[0]}</span>
         ) : null}
-      </FormGroup>
+      </FormGroup> */}
       <FormGroup className="mt-3">
         <Label className="mb-1" for="exampleEmail">Name</Label>
         <Input
