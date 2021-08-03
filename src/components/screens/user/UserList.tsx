@@ -8,8 +8,8 @@ import { IconEdit, IconDelete } from '~/src/components/elements'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { UserAdd } from '~/src/components/screens/user/UserAdd'
 import { UserEdit } from '~/src/components/screens/user/UserEdit'
-import Pagination from '~/src/components/elements/pagination'
-import { Search } from '~/src/components/elements/search'
+import Pagination from '../../elements/Pagination'
+import { Search } from '../../elements/Search'
 import styles from '~/styles/pages/users.module.scss'
 
 export const UserList = () => {
