@@ -12,7 +12,7 @@ import fetchApi from '~/src/helpers/fetchApi'
 import { setLocalStorage } from '~/src/helpers/localStorage'
 import { APP_TOKEN, GET_ME } from '~/src/models'
 import { LoginGoogle } from '~/src/components/screens/login/LoginGoogle'
-import { Loading } from '~/src/components/elements/loading'
+import { Loading } from '~/src/components/elements/Loading'
 import styles from '~/styles/components/widgets/login.module.scss'
 
 export const LoginForm = ({ setAppToken }) => {
