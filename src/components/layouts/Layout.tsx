@@ -1,23 +1,32 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Row, Col } from 'reactstrap'
-import { useRouter } from 'next/router'
+import Router from 'next/router'
 import { ToastContainer } from 'react-toastify'
+import { APP_TOKEN } from '~/src/models'
 import { Sidebar } from '~/src/components/widgets/Sidebar'
 import { Header } from '~/src/components/widgets/Header'
 import { LoginForm } from '~/src/components/screens/login/LoginForm'
 import { getLocalStorage } from '~/src/helpers/localStorage'
 
 export const Layout = ({ children }) => {
-  const router = useRouter()
-  const [isLogin, setIsLogin] = useState(false)
+  const [appToken, setAppToken] = useState<string>('')
+  
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setAppToken(getLocalStorage(APP_TOKEN))
+    }
+    if (!appToken) {
+      Router.push({ pathname: '/' })
+    }
+  }, [appToken])
 
   return (
     <>
-      {!isLogin ? (
-        <LoginForm setIsLogin={setIsLogin} /> 
+      {!appToken ? (
+        <LoginForm setAppToken={setAppToken} />
       ) : (
         <>
-          <Header />
+          <Header setAppToken={setAppToken} />
           <Row>
             <Col xs="2">
               <Sidebar />

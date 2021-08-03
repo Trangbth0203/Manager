@@ -1,14 +1,22 @@
 import React from 'react'
-import { useRouter } from 'next/router'
 import { NavLink, Navbar, Col, Input } from 'reactstrap'
 import { IconLogin } from '~/src/components/elements'
+import { clearLocalStorage, getLocalStorage, removeLocalStorage } from '~/src/helpers/localStorage'
+import { APP_TOKEN, GET_ME } from '~/src/models'
+import { IMe } from '~/src/models/users'
 import styles from '~/styles/components/widgets/header.module.scss'
 
-export const Header = () => {
-  const router = useRouter()
-
+export const Header = ({ setAppToken }) => {
   const onHandleLogout = () => {
-    router.push({ pathname: '/auth/login' })
+    removeLocalStorage(APP_TOKEN)
+    removeLocalStorage(GET_ME)
+    clearLocalStorage()
+    setAppToken('')
+  }
+
+  let user = {} as IMe
+  if (getLocalStorage(GET_ME)) {
+    user = JSON.parse(getLocalStorage(GET_ME))
   }
 
   return (
@@ -19,16 +27,15 @@ export const Header = () => {
           <Input
             type="text"
             name="text"
-            id="exampleText"
             placeholder="Search..."
           />
         </Col>
         <Col className="d-flex justify-content-end" xs="">
-          {/* <NavLink style={{ color: '#FFFFFF' }} href="/">
-            <span>
-              <IconSignUp /> SignUp
+          <NavLink style={{ color: '#FFFFFF' }}>
+            <span className="cursor-pointer ml-2" title='Logout'>
+              {user.name}
             </span>
-          </NavLink> */}
+          </NavLink>
           <NavLink style={{ color: '#FFFFFF' }} onClick={onHandleLogout}>
             <span className="cursor-pointer ml-2" title='Logout'>
               <IconLogin />

@@ -1,29 +1,30 @@
-.CardLogin {
- border: 2px solid #181818;
- height: 500px;
- width: 400px;
- margin: auto;
- margin-top: 100px;
+.cardLogin {
+  border: 2px solid #181818;
+  height: 500px;
+  width: 400px;
+  margin: auto;
+  margin-top: 100px;
 }
-.TitleLogin {
-    width: 100%;
-    background-color:#181818;
-    height: 80px;
-    color: white;
-    text-align: center;
-    font-size:xx-large;
+
+.titleLogin {
+  width: 100%;
+  background-color: #181818;
+  height: 80px;
+  line-height: 70px;
+  color: white;
+  text-align: center;
+  font-size: xx-large;
 }
-.FormLogin {
- margin-top: 4px;
- margin-left: 30px;
- margin-right: 30px;
-} 
-.ButtonLogin{
-    width: 100%;
-    margin-top: 25px ;
-    background-color: #00BFFF;
-    margin-bottom: 10px;
+
+.formLogin {
+  margin-top: 4px;
+  margin-left: 30px;
+  margin-right: 30px;
 }
-.LabelLogin {
-    text-align: center;
+
+.buttonLogin {
+  width: 100%;
+  margin-top: 25px;
+  background-color: #00bfff;
+  margin-bottom: 10px;
 }

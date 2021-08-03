@@ -19,3 +19,25 @@ export const setLocalStorage = (key: string, value: string) => {
     return null
   }
 }
+
+export const removeLocalStorage = (key: string) => {
+  try {
+    if (typeof window !== 'undefined') {
+      return localStorage.removeItem(key)
+    }
+    return null
+  } catch (error) {
+    return null
+  }
+}
+
+export const clearLocalStorage = () => {
+  try {
+    if (typeof window !== 'undefined') {
+      return localStorage.clear()
+    }
+    return null
+  } catch (error) {
+    return null
+  }
+}

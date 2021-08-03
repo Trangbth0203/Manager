@@ -8,9 +8,7 @@ export const LoginGoogle = () => {
     console.log(response)
   }
 
-
   return (
-    
     <GoogleLogin
       clientId={CLIENT_ID}
       buttonText="Login with Google"

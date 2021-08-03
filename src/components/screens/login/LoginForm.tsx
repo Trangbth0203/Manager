@@ -1,14 +1,22 @@
 import React, { useState } from 'react'
-import { Form, FormGroup, Label, Input, Button, CardTitle, Card } from 'reactstrap'
-import { useRouter } from 'next/router'
+import {
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  CardTitle,
+  Card,
+} from 'reactstrap'
 import fetchApi from '~/src/helpers/fetchApi'
-import { LoginGoogle } from '~/src/components/screens/login/LoginGoogle'
 import { setLocalStorage } from '~/src/helpers/localStorage'
+import { APP_TOKEN, GET_ME } from '~/src/models'
+import { LoginGoogle } from '~/src/components/screens/login/LoginGoogle'
+import { Loading } from '~/src/components/elements/Loading'
 import styles from '~/styles/components/widgets/login.module.scss'
 
-export const LoginForm = ({ setIsLogin }) => {
-  const router = useRouter()
-  const [error, setError] = useState('')
+export const LoginForm = ({ setAppToken }) => {
+  const [error, setError] = useState<any>()
   const [isLoading, setIsLoading] = useState(false)
   const [loginAccount, setLoginAccount] = useState({
     email: '',
@@ -35,26 +43,22 @@ export const LoginForm = ({ setIsLogin }) => {
       const response = await fetchApi.postLogin(params)
       if (!response.status) {
         setIsLoading(false)
+        return setError((response as any).errors)
       }
-      const userInfo = await fetchApi.getMe({ params: { email: params.email } })
-      if (!userInfo.status) {
-        setIsLoading(false)
-      }
-      setIsLogin(true)
-      setLocalStorage('IS_LOGIN', JSON.stringify(userInfo))
-      setTimeout(() => {
-        router.replace({ pathname: '/departments' })
-      }, 500)
+      setIsLoading(false)
+      setLocalStorage(APP_TOKEN, JSON.stringify((response as any).access_token))
+      setLocalStorage(GET_ME, JSON.stringify((response as any).me))
+      setAppToken(JSON.stringify((response as any).access_token))
     } catch (error) {
       setIsLoading(false)
-      setError(error.message)
+      setError(error.errors)
     }
   }
 
   return (
-    <Card className={styles.CardLogin}>
-      <CardTitle className={styles.TitleLogin}>LOGIN FORM</CardTitle>
-      <Form className={styles.FormLogin}>
+    <Card className={styles.cardLogin}>
+      <CardTitle className={styles.titleLogin}>LOGIN FORM</CardTitle>
+      <Form className={styles.formLogin}>
         <FormGroup>
           <Label className="mb-1" for="exampleEmail">
             Email
@@ -63,13 +67,12 @@ export const LoginForm = ({ setIsLogin }) => {
             type="email"
             name="email"
             id="exampleEmail"
-            required
-            placeholder="Email"
+            placeholder="Enter email"
             value={loginAccount.email || ''}
             onChange={onChangeValue}
           />
-          {error ? (
-            <span className="text-danger">{error}</span>
+          {error && error.email ? (
+            <span className="text-danger">{error.email[0]}</span>
           ) : null}
         </FormGroup>
         <FormGroup className="mt-3">
@@ -79,15 +82,17 @@ export const LoginForm = ({ setIsLogin }) => {
           <Input
             type="password"
             name="password"
-            required
             id="examplePassword"
-            placeholder="Password "
+            placeholder="Enter password"
             value={loginAccount.password || ''}
             onChange={onChangeValue}
           />
+          {error && error.password ? (
+            <span className="text-danger">{error.password[0]}</span>
+          ) : null}
         </FormGroup>
-        <Button className={styles.ButtonLogin} active onClick={onHandleLogin}>
-          {isLoading ? 'Loading' : 'Log In'}
+        <Button className={styles.buttonLogin} active onClick={onHandleLogin}>
+          {isLoading ? <Loading /> : 'Login'}
         </Button>
       </Form>
       <div className="mt-3">

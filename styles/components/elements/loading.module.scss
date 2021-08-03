@@ -1,22 +1,43 @@
-$charade: #282a37;
-$bluebell: #979fd0;
-
-.donut {
-  width: 0.2rem;
-  height: 0.2rem;
-  margin: 2rem;
-  border-radius: 50%;
-  border: 0.3rem solid rgba($bluebell, 0.3);
-  border-top-color: $bluebell;
-  animation: 1.5s spin infinite linear;
-
-  &.multi {
-    border-bottom-color: $bluebell;
-  }
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  height: 25px;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
+.loading {
+  display: flex;
+}
+
+.circle {
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border-radius: 50%;
+  margin: 3px;
+  animation: jump 0.5s ease-in infinite;
+}
+
+.circle:nth-of-type(1) {
+  background-color: rgb(20, 101, 106);
+}
+
+.circle:nth-of-type(2) {
+  animation-delay: 0.1s;
+  background-color: rgb(250, 114, 104);
+}
+
+.circle:nth-of-type(3) {
+  animation-delay: 0.2s;
+  background-color: rgb(148, 219, 223);
+}
+
+@keyframes jump {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
   }
 }

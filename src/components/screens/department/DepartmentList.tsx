@@ -7,16 +7,15 @@ import {
   CardTitle,
   Button,
 } from 'reactstrap'
-import { IDepartment } from '~/src/models/departments'
-import { DEFAULT_CURRENT_PAGE } from '~/src/models'
-import fetchApi from '~/src/helpers/fetchApi'
 import { toast } from 'react-toastify'
+import { IDepartment } from '~/src/models/departments'
+import fetchApi from '~/src/helpers/fetchApi'
 import { IconEdit, IconDelete } from '~/src/components/elements'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { DepartmentAdd } from '~/src/components/screens/department/DepartmentAdd'
 import { DepartmentEdit } from '~/src/components/screens/department/DepartmentEdit'
-import Pagination from '~/src/components/elements/pagination'
-import { Search } from '~/src/components/elements/search'
+import Pagination from '~/src/components/elements/Pagination'
+import { Search } from '~/src/components/elements/Search'
 import styles from '~/styles/pages/departments.module.scss'
 
 export const DepartmentList = () => {
@@ -155,7 +154,7 @@ export const DepartmentList = () => {
         isLoading={isLoading}
         currentPage={Number(params.page)}
         perPage={Number(params.first)}
-        totalItems={Number(totalItems.total)}
+        totalItems={Number(totalItems?.total)}
         onChangeLimit={onChangeLimit}
         onPaginate={onPaginate}
       />
