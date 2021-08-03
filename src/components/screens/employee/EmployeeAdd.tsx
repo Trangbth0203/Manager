@@ -36,7 +36,7 @@ export const EmployeeAdd: FC<Props> = ({
     age: '',
     gender: '',
   }
-  const [error, setError] = useState(initialError)
+  const [error, setError] = useState<any>(initialError)
   const [inputValues, setInputValues] = useState(initialInput)
   const onChangeValue = (e) => {
     e.preventDefault()
@@ -77,7 +77,7 @@ export const EmployeeAdd: FC<Props> = ({
       const response = await fetchApi.postCreateEmployee(formData)
       if (!response.status) {
         setIsLoading(false)
-        return setError(response.message as any)
+        return setError(response)
       }
       setIsLoading(false)
       toast.success('Thêm mới thành công', { position: 'top-right' })
@@ -127,8 +127,8 @@ export const EmployeeAdd: FC<Props> = ({
               )
             })}
           </Input>
-          {error && error.department_id ? (
-            <p className="text-danger">{error.department_id}</p>
+          {error && error.message && error.department_id ? (
+            <p className="text-danger">{error.message.department_id}</p>
           ) : null}
         </FormGroup>
         <FormGroup className="mt-3">
@@ -150,8 +150,8 @@ export const EmployeeAdd: FC<Props> = ({
               )
             })}
           </Input>
-          {error && error.department_id ? (
-            <p className="text-danger">{error.email}</p>
+          {error && error.message && error.department_id ? (
+            <p className="text-danger">{error.message.email}</p>
           ) : null}
         </FormGroup>
         <FormGroup className="mt-3">
@@ -166,8 +166,8 @@ export const EmployeeAdd: FC<Props> = ({
             placeholder="date placeholder"
             onChange={onChangeValue}
           />
-          {error && error.birth_date ? (
-            <p className="text-danger">{error.birth_date}</p>
+          {error && error.message && error.birth_date ? (
+            <p className="text-danger">{error.message.birth_date}</p>
           ) : null}
         </FormGroup>
         <FormGroup className="mt-3">
@@ -182,8 +182,8 @@ export const EmployeeAdd: FC<Props> = ({
             placeholder="with Age"
             onChange={onChangeValue}
           />
-          {error && error.age ? (
-            <p className="text-danger">{error.age}</p>
+          {error && error.message && error.age ? (
+            <p className="text-danger">{error.message.age}</p>
           ) : null}
         </FormGroup>
         <div className="d-flex justify-content-between">
@@ -199,8 +199,8 @@ export const EmployeeAdd: FC<Props> = ({
               placeholder="with Firstname"
               onChange={onChangeValue}
             />
-            {error && error.first_name ? (
-              <p className="text-danger">{error.first_name}</p>
+            {error &&  error.message && error.first_name ? (
+              <p className="text-danger">{error.message.first_name}</p>
             ) : null}
           </FormGroup>
           <FormGroup className="mt-3">
@@ -215,8 +215,8 @@ export const EmployeeAdd: FC<Props> = ({
               placeholder="with Lastname"
               onChange={onChangeValue}
             />
-            {error && error.last_name ? (
-              <p className="text-danger">{error.last_name}</p>
+            {error && error.message && error.last_name ? (
+              <p className="text-danger">{error.message.last_name}</p>
             ) : null}
           </FormGroup>
         </div>

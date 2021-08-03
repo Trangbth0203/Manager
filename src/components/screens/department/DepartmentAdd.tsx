@@ -155,7 +155,7 @@ export const DepartmentAdd: FC<Props> = ({
               onChange={onChangeValue}
             />
             {error && error.message && error.department_manager ? (
-              <p className="text-danger">{error.department_manager}</p>
+              <p className="text-danger">{error.message.department_manager}</p>
             ) : null}
           </FormGroup>
           <FormGroup className="mt-3">
@@ -170,7 +170,7 @@ export const DepartmentAdd: FC<Props> = ({
               onChange={onChangeValue}
             />
             {error && error.message && error.department_manager_other ? (
-              <p className="text-danger">{error.department_manager_other}</p>
+              <p className="text-danger">{error.message.department_manager_other}</p>
             ) : null}
           </FormGroup>
         </div>

@@ -16,7 +16,7 @@ import styles from '~/styles/pages/employees.module.scss'
 
 export const EmployeeList = () => {
   const [params, setParams] = useState({ first: 10, page: 1, keyword: '' })
-  const [totalItem, setTotalItem] = useState()
+  const [totalItem, setTotalItem] = useState<any>()
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [idUpdate, setIdUpdate] = useState<string>('')
   const [listEmployee, setListEmployee] = useState([])
@@ -30,7 +30,7 @@ export const EmployeeList = () => {
         setListEmployee(res.data)
         setIsLoading(false)
       }
-      setTotalItem(res.total)
+      setTotalItem(res)
     })
   }
 
@@ -143,7 +143,7 @@ export const EmployeeList = () => {
       </Card>
       <Pagination
         currentPage={params.page}
-        totalItems={totalItem}
+        totalItems={totalItem.total}
         perPage={params.first}
         onPaginate={onPaginate}
         onChangeLimit={onChangeLimit}

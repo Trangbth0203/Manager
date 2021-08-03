@@ -15,7 +15,7 @@ import styles from '~/styles/pages/users.module.scss'
 export const UserList = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [params, setParams] = useState({ first: 10, page: 1, keyword: '' })
-  const [totalItem, setTotalItem] = useState()
+  const [totalItem, setTotalItem] = useState<any>()
   const [listUser, setListUser] = useState([])
   const [idUpdate, setIdUpdate] = useState<string>('')
   const [openModalCreate, setOpenModalCreate] = useState<boolean>(false)
@@ -28,7 +28,7 @@ export const UserList = () => {
         setListUser(res.data)
         setIsLoading(false)
       }
-      setTotalItem(res.total)
+      setTotalItem(res)
     })
   }
   useEffect(() => {
@@ -131,7 +131,7 @@ export const UserList = () => {
       </Card>
       <Pagination
         currentPage={params.page}
-        totalItems={totalItem}
+        totalItems={totalItem.total}
         perPage={params.first}
         onPaginate={onPaginate}
         onChangeLimit={onchangeLimit}
@@ -152,7 +152,6 @@ export const UserList = () => {
          
          />
       ) : null}
-       
       <UserAdd
         openModalCreate={openModalCreate}
         setOpenModalCreate={setOpenModalCreate}

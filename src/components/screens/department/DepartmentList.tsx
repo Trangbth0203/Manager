@@ -24,7 +24,7 @@ export const DepartmentList = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [idUpdate, setIdUpdate] = useState<string>('')
   const [listDepartment, setListDepartment] = useState([])
-  const [totalItems, setTotalItems] = useState([])
+  const [totalItems, setTotalItems] = useState<any>()
   const [openModalCreate, setOpenModalCreate] = useState<boolean>(false)
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false)
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false)
@@ -36,7 +36,7 @@ export const DepartmentList = () => {
         setListDepartment(response.data)
         setIsLoading(false)
       }
-      setTotalItems(response.total)
+      setTotalItems(response)
     } catch (error) {
       console.log('error', error)
     }
@@ -155,7 +155,7 @@ export const DepartmentList = () => {
         isLoading={isLoading}
         currentPage={Number(params.page)}
         perPage={Number(params.first)}
-        totalItems={Number(totalItems)}
+        totalItems={Number(totalItems.total)}
         onChangeLimit={onChangeLimit}
         onPaginate={onPaginate}
       />
