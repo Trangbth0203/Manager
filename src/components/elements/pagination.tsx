@@ -21,7 +21,7 @@ interface Props {
   onChangeLimit: (value: number) => void
 }
 
-const Pagination: FC<Props> = ({
+export const Pagination: FC<Props> = ({
   isLoading,
   currentPage,
   totalItems,
@@ -141,5 +141,3 @@ const Pagination: FC<Props> = ({
     </div>
   )
 }
-
-export default Pagination

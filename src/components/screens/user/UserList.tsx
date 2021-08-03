@@ -8,7 +8,7 @@ import { IconEdit, IconDelete } from '~/src/components/elements'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { UserAdd } from '~/src/components/screens/user/UserAdd'
 import { UserEdit } from '~/src/components/screens/user/UserEdit'
-import Pagination from '../../elements/Pagination'
+import { Pagination } from '../../elements/Pagination'
 import { Search } from '../../elements/Search'
 import styles from '~/styles/pages/users.module.scss'
 

@@ -10,7 +10,7 @@ import { IconEdit, IconDelete } from '~/src/components/elements'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { EmployeeAdd } from '~/src/components/screens/employee/EmployeeAdd'
 import { EmployeeEdit } from '~/src/components/screens/employee/EmployeeEdit'
-import Pagination from '../../elements/Pagination'
+import { Pagination } from '../../elements/Pagination'
 import { Search } from '../../elements/Search'
 import styles from '~/styles/pages/employees.module.scss'
 
