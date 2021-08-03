@@ -7,6 +7,7 @@ import {
   ModalFooter,
   Spinner,
 } from 'reactstrap'
+import { Loading } from '~/src/components/elements/Loading'
 
 interface Props {
   title: string
@@ -56,7 +57,7 @@ export const CustomModal: FC<Props> = ({
             {textLeftButton}
           </Button>
           <Button color="primary" onClick={clickRightButton}>
-            {isLoading ? <Spinner size="sm" /> : textRightButton}
+            {isLoading ? <Loading /> : textRightButton}
           </Button>
         </ModalFooter>
       </Modal>

@@ -30,7 +30,7 @@ export const DepartmentAdd: FC<Props> = ({
     department_manager: '',
     department_manager_other: '',
   }
-  const [error, setError] = useState<any>(initialError)
+  const [error, setError] = useState(initialError)
   const [inputValues, setInputValues] = useState(initialInput)
   const onChangeValue = (e) => {
     e.preventDefault()
@@ -62,7 +62,7 @@ export const DepartmentAdd: FC<Props> = ({
       const response = await fetchApi.postCreateDepartment(formData)
       if (!response.status) {
         setIsLoading(false)
-        return setError(response)
+        return setError((response as any).message)
       }
       setIsLoading(false)
       toast.success('Thêm mới thành công', { position: 'top-right' })
@@ -105,7 +105,7 @@ export const DepartmentAdd: FC<Props> = ({
             placeholder="Division"
             onChange={onChangeValue}
           />
-          {error && error.message && error.department_name ? (
+          {error && error.department_name ? (
             <p className="text-danger">{error.department_name}</p>
           ) : null}
         </FormGroup>
@@ -136,7 +136,7 @@ export const DepartmentAdd: FC<Props> = ({
               placeholder="Phone"
               onChange={onChangeValue}
             />
-            {error.message && error.department_phone ? (
+            {error && error.department_phone ? (
               <p className="text-danger">{error.department_phone}</p>
             ) : null}
           </FormGroup>
@@ -154,8 +154,8 @@ export const DepartmentAdd: FC<Props> = ({
               placeholder="Name  MainManager"
               onChange={onChangeValue}
             />
-            {error && error.message && error.department_manager ? (
-              <p className="text-danger">{error.message.department_manager}</p>
+            {error && error.department_manager ? (
+              <p className="text-danger">{error.department_manager}</p>
             ) : null}
           </FormGroup>
           <FormGroup className="mt-3">
@@ -169,8 +169,8 @@ export const DepartmentAdd: FC<Props> = ({
               placeholder="Name OtherManagers"
               onChange={onChangeValue}
             />
-            {error && error.message && error.department_manager_other ? (
-              <p className="text-danger">{error.message.department_manager_other}</p>
+            {error && error.department_manager_other ? (
+              <p className="text-danger">{error.department_manager_other}</p>
             ) : null}
           </FormGroup>
         </div>

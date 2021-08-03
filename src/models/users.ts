@@ -19,4 +19,5 @@ export interface IMe {
   updated_at: string
   created_at: string
   created_by: string
+  imageUrl: string
 }

@@ -51,7 +51,7 @@ export const LoginForm = ({ setAppToken }) => {
       setAppToken(JSON.stringify((response as any).access_token))
     } catch (error) {
       setIsLoading(false)
-      setError(error.errors)
+      setError(error)
     }
   }
 
@@ -90,13 +90,16 @@ export const LoginForm = ({ setAppToken }) => {
           {error && error.password ? (
             <span className="text-danger">{error.password[0]}</span>
           ) : null}
+          {error && error.message ? (
+            <span className="text-danger">{error.message}</span>
+          ) : null}
         </FormGroup>
         <Button className={styles.buttonLogin} active onClick={onHandleLogin}>
           {isLoading ? <Loading /> : 'Login'}
         </Button>
       </Form>
       <div className="mt-3">
-        <LoginGoogle />
+        <LoginGoogle setAppToken={setAppToken}/>
       </div>
     </Card>
   )

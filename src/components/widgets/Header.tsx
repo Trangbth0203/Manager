@@ -1,6 +1,7 @@
 import React from 'react'
 import { NavLink, Navbar, Col, Input } from 'reactstrap'
-import { IconLogin } from '~/src/components/elements'
+import { Image } from 'react-bootstrap'
+import { IconLogin } from '~/src/components/elements/Index'
 import { clearLocalStorage, getLocalStorage, removeLocalStorage } from '~/src/helpers/localStorage'
 import { APP_TOKEN, GET_ME } from '~/src/models'
 import { IMe } from '~/src/models/users'
@@ -34,6 +35,11 @@ export const Header = ({ setAppToken }) => {
           <NavLink style={{ color: '#FFFFFF' }}>
             <span className="cursor-pointer ml-2" title='Logout'>
               {user.name}
+            </span>
+          </NavLink>
+          <NavLink style={{ color: '#FFFFFF' }}>
+            <span className="cursor-pointer" title='Logout'>
+              <Image src={user.imageUrl} className={styles.avatar} alt="avatar" />
             </span>
           </NavLink>
           <NavLink style={{ color: '#FFFFFF' }} onClick={onHandleLogout}>
