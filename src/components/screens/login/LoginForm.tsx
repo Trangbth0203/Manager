@@ -36,7 +36,7 @@ export const LoginForm = ({ setIsLogin }) => {
       if (!response.status) {
         setIsLoading(false)
       }
-      const userInfo = await fetchApi.getMe({ params: { email: response.email } })
+      const userInfo = await fetchApi.getMe({ params: { email: params.email } })
       if (!userInfo.status) {
         setIsLoading(false)
       }

@@ -30,7 +30,7 @@ export const DepartmentAdd: FC<Props> = ({
     department_manager: '',
     department_manager_other: '',
   }
-  const [error, setError] = useState(initialError)
+  const [error, setError] = useState<any>(initialError)
   const [inputValues, setInputValues] = useState(initialInput)
   const onChangeValue = (e) => {
     e.preventDefault()
@@ -62,7 +62,7 @@ export const DepartmentAdd: FC<Props> = ({
       const response = await fetchApi.postCreateDepartment(formData)
       if (!response.status) {
         setIsLoading(false)
-        return setError(response.message)
+        return setError(response)
       }
       setIsLoading(false)
       toast.success('Thêm mới thành công', { position: 'top-right' })
@@ -105,7 +105,7 @@ export const DepartmentAdd: FC<Props> = ({
             placeholder="Division"
             onChange={onChangeValue}
           />
-          {error && error.department_name ? (
+          {error && error.message && error.department_name ? (
             <p className="text-danger">{error.department_name}</p>
           ) : null}
         </FormGroup>
@@ -136,7 +136,7 @@ export const DepartmentAdd: FC<Props> = ({
               placeholder="Phone"
               onChange={onChangeValue}
             />
-            {error && error.department_phone ? (
+            {error.message && error.department_phone ? (
               <p className="text-danger">{error.department_phone}</p>
             ) : null}
           </FormGroup>
@@ -154,7 +154,7 @@ export const DepartmentAdd: FC<Props> = ({
               placeholder="Name  MainManager"
               onChange={onChangeValue}
             />
-            {error && error.department_manager ? (
+            {error && error.message && error.department_manager ? (
               <p className="text-danger">{error.department_manager}</p>
             ) : null}
           </FormGroup>
@@ -169,7 +169,7 @@ export const DepartmentAdd: FC<Props> = ({
               placeholder="Name OtherManagers"
               onChange={onChangeValue}
             />
-            {error && error.department_manager_other ? (
+            {error && error.message && error.department_manager_other ? (
               <p className="text-danger">{error.department_manager_other}</p>
             ) : null}
           </FormGroup>
