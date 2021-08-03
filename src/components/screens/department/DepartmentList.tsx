@@ -14,8 +14,8 @@ import { IconEdit, IconDelete } from '~/src/components/elements'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { DepartmentAdd } from '~/src/components/screens/department/DepartmentAdd'
 import { DepartmentEdit } from '~/src/components/screens/department/DepartmentEdit'
-import Pagination from '~/src/components/elements/Pagination'
-import { Search } from '~/src/components/elements/Search'
+import Pagination from '~/src/components/elements/pagination'
+import { Search } from '~/src/components/elements/search'
 import styles from '~/styles/pages/departments.module.scss'
 
 export const DepartmentList = () => {

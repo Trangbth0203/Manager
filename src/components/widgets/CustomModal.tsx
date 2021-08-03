@@ -7,7 +7,7 @@ import {
   ModalFooter,
   Spinner,
 } from 'reactstrap'
-import { Loading } from '~/src/components/elements/Loading'
+import { Loading } from '~/src/components/elements/loading'
 
 interface Props {
   title: string
