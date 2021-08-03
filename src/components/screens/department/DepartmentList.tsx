@@ -10,7 +10,7 @@ import {
 import { toast } from 'react-toastify'
 import { IDepartment } from '~/src/models/departments'
 import fetchApi from '~/src/helpers/fetchApi'
-import { IconEdit, IconDelete } from '~/src/components/elements/Index'
+import { IconEdit, IconDelete } from '~/src/components/elements'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { DepartmentAdd } from '~/src/components/screens/department/DepartmentAdd'
 import { DepartmentEdit } from '~/src/components/screens/department/DepartmentEdit'
