@@ -5,9 +5,8 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Spinner,
 } from 'reactstrap'
-import { Loading } from '~/src/components/elements/loading'
+import { Loading } from '~/src/components/elements/Loading'
 
 interface Props {
   title: string
