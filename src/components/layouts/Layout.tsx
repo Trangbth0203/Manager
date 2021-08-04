@@ -13,7 +13,7 @@ export const Layout = ({ children }) => {
   
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setAppToken(getLocalStorage(APP_TOKEN))
+      setAppToken (() => getLocalStorage(APP_TOKEN))
     }
     if (!appToken) {
       Router.push({ pathname: '/' })
