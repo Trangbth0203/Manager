@@ -94,11 +94,7 @@ export const UserList = () => {
                 </tr>
               </thead>
               <tbody>
-                {  isLoading ? (
-                  <tr className="text-center">
-                    <td colSpan={4}>Chưa có dữ liệu</td>
-                  </tr>
-                ) : 
+                {  isLoading ?<Loading /> : 
                 listUser &&
                   listUser.map((item: IUsers, index: number) => {
                     return (
