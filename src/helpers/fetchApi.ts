@@ -49,4 +49,7 @@ export default class fetchApi {
   static updateUser(id, params, config) {
     return http.put(`/v1/user/${id}`, params, config)
   }
+  static getProfile(params) {
+    return http.get(`/v1/profile`, params)
+  }
 }

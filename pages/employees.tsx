@@ -14,7 +14,6 @@ const Employees: NextPage = () => {
       </Head>
       <div>
         <EmployeeList />
-       
       </div>
     </>
   )
