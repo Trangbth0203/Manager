@@ -93,7 +93,7 @@ export const DepartmentAdd: FC<Props> = ({
       clickRightButton={onHandleCreateDepartment}
     >
       <Form>
-      <div className="d-flex justify-content-between">
+      {/* <div className="d-flex justify-content-between"> */}
         <FormGroup className="mt-3">
           <Label className="mb-1" for="exampleSelect">
             DepartmentName
@@ -140,7 +140,7 @@ export const DepartmentAdd: FC<Props> = ({
               <p className="text-danger">{error.department_phone}</p>
             ) : null}
           </FormGroup>
-          </div>
+          {/* </div> */}
        
         <div className="d-flex justify-content-between">
           <FormGroup className="mt-3">
