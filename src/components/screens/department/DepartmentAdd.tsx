@@ -142,7 +142,7 @@ export const DepartmentAdd: FC<Props> = ({
           </FormGroup>
           {/* </div> */}
        
-        <div className="d-flex justify-content-between">
+        {/* <div className="d-flex justify-content-between"> */}
           <FormGroup className="mt-3">
             <Label className="mb-1" for="exampleMainManager">
               Main Manager
@@ -173,7 +173,7 @@ export const DepartmentAdd: FC<Props> = ({
               <p className="text-danger">{error.department_manager_other}</p>
             ) : null}
           </FormGroup>
-        </div>
+        {/* </div> */}
       </Form>
     </CustomModal>
   )
