@@ -108,7 +108,8 @@ export const DepartmentList = () => {
                 </tr>
               </thead>
               <tbody>
-                {isLoading ? <Loading /> : (
+                {isLoading ? 
+               (<tr><td colSpan={7}> <Loading /> </td></tr>): (
                   listDepartment &&
                   listDepartment.map(
                     (item: IDepartment, index: number) => {

@@ -103,7 +103,7 @@ export const EmployeeList = () => {
                 </tr>
               </thead>
               <tbody>
-                { isLoading ? <Loading />  : 
+                { isLoading ?  (<tr><td colSpan={9}> <Loading /> </td></tr>)  : 
                 listEmployee &&
                   listEmployee.map((item: IEmployee, index: number) => {
                     return (
