@@ -1,6 +1,7 @@
 import React, { useState, FC, Dispatch } from 'react'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
+import dayjs from 'dayjs'
 import { Form, FormGroup, Label, Input } from 'reactstrap'
 import fetchApi from '~/src/helpers/fetchApi'
 import { Loading } from '../../elements/Loading'
@@ -50,7 +51,7 @@ export const EmployeeEdit: FC<Props> = ({
   const fetchListDepartment = async () => {
     setIsLoadingList(true)
     try {
-      const response = await fetchApi.getListDepartment({})
+      const response = await fetchApi.getListDepartment({ params: { first: 100 } })
       setListDepartment(response.data)
       setIsLoadingList(false)
     } catch (error) {
@@ -61,11 +62,10 @@ export const EmployeeEdit: FC<Props> = ({
 
   useEffect(() => {
     fetchListDepartment()
-  }, [])
+  }, [updateItem])
 
   const clickLeftButton = () => {
     setError({} as any)
-    setInputValues({} as any)
   }
 
   const clickRightButton = async () => {
@@ -109,6 +109,8 @@ export const EmployeeEdit: FC<Props> = ({
       [name]: value,
     }))
   }
+
+  console.log(inputValues)
 
   return (
     <CustomModal
@@ -155,7 +157,7 @@ export const EmployeeEdit: FC<Props> = ({
             </Label>
             <Input
               type="date"
-              defaultValue={inputValues.birth_date || ''}
+              defaultValue={dayjs(inputValues.birth_date).format('YYYY-MM-DD') || ''}
               name="birth_date"
               placeholder="date placeholder"
               onChange={onChangeValue}
