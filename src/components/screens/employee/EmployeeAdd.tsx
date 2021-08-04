@@ -48,12 +48,13 @@ export const EmployeeAdd: FC<Props> = ({
   }
 
   const fetchDepartment = async () => {
-    const response = await fetchApi.getListDepartment({})
+    const response = await fetchApi.getListDepartment({ params: { first: 100 } })
     setListDepartment(response.data)
   }
+
   const fetchUser = async () => {
-     const response = await fetchApi.getListUser({ params: { nonactive: '1' } })
-     setListUser(response.data)
+    const response = await fetchApi.getListUser({ params: { first: 100, nonactive: '1' } })
+    setListUser(response.data)
   }
 
   useEffect(() => {
