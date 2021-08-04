@@ -10,13 +10,13 @@ import {
 import { toast } from 'react-toastify'
 import { IDepartment } from '~/src/models/departments'
 import fetchApi from '~/src/helpers/fetchApi'
-import { IconEdit, IconDelete } from '~/src/components/elements/Icon'
+import { IconEdit, IconDelete } from '~/src/components/elements/icon'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { DepartmentAdd } from '~/src/components/screens/department/DepartmentAdd'
 import { DepartmentEdit } from '~/src/components/screens/department/DepartmentEdit'
-import { Pagination } from '~/src/components/elements/Pagination'
-import { Search } from '~/src/components/elements/Search'
-import { Loading } from '~/src/components/elements/Loading'
+import { Pagination } from '~/src/components/elements/pagination'
+import { Search } from '~/src/components/elements/search'
+import { Loading } from '~/src/components/elements/loading'
 import styles from '~/styles/pages/departments.module.scss'
 
 export const DepartmentList = () => {
