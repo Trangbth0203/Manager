@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink, Navbar, Col, Input } from 'reactstrap'
 import { Image } from 'react-bootstrap'
-import { IconLogin } from '~/src/components/elements/Icon'
+import { IconLogin } from '~/src/components/elements'
 import { clearLocalStorage, getLocalStorage, removeLocalStorage } from '~/src/helpers/localStorage'
 import { APP_TOKEN, GET_ME } from '~/src/models'
 import { IMe } from '~/src/models/users'
