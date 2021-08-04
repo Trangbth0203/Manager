@@ -13,14 +13,16 @@ export const LoginGoogle = ({ setAppToken }) => {
       setAppToken(JSON.stringify(response.accessToken))
     }
   }
+ const handleFailure = (response: GoogleLoginResponse) => {
 
+ }
   return (
     <GoogleLogin
       clientId={CLIENT_ID}
       buttonText="Login with Google"
       className={styles.buttonLoginGoogle}
       onSuccess={responseGoogle}
-      onFailure={responseGoogle}
+      onFailure={handleFailure}
       cookiePolicy={'single_host_origin'}
     />
   )
