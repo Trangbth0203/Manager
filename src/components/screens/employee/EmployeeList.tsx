@@ -11,7 +11,7 @@ import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { EmployeeAdd } from '~/src/components/screens/employee/EmployeeAdd'
 import { EmployeeEdit } from '~/src/components/screens/employee/EmployeeEdit'
 import { Pagination } from '~/src/components/elements/pagination'
-import { Search } from '~/src/components/elements/Search'
+import { Search } from '~/src/components/elements/search'
 import styles from '~/styles/pages/employees.module.scss'
 
 export const EmployeeList = () => {
