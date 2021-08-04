@@ -44,6 +44,7 @@ export const LoginForm = ({ setAppToken }) => {
       if (!response.status) {
         setIsLoading(false)
         return setError((response as any).errors)
+  
       }
       setIsLoading(false)
       setLocalStorage(APP_TOKEN, JSON.stringify((response as any).access_token))
@@ -54,7 +55,6 @@ export const LoginForm = ({ setAppToken }) => {
       setError(error)
     }
   }
-
   return (
     <Card className={styles.cardLogin}>
       <CardTitle className={styles.titleLogin}>LOGIN FORM</CardTitle>

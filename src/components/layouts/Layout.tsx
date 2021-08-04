@@ -18,12 +18,15 @@ export const Layout = ({ children }) => {
     if (!appToken) {
       Router.push({ pathname: '/' })
     }
-  }, [appToken])
+  }, [])
+ const handleSetAppToken = (token) => {
+    setAppToken(token)
+ }
 
   return (
     <>
       {!appToken ? (
-        <LoginForm setAppToken={setAppToken} />
+        <LoginForm setAppToken={handleSetAppToken} />
       ) : (
         <>
           <Header setAppToken={setAppToken} />
