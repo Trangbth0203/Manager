@@ -1,8 +1,10 @@
 import React, { useState, FC, Dispatch } from 'react'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
-import { Form, FormGroup, Label, Input, Spinner } from 'reactstrap'
+import dayjs from 'dayjs'
+import { Form, FormGroup, Label, Input } from 'reactstrap'
 import fetchApi from '~/src/helpers/fetchApi'
+import { Loading } from '../../elements/Loading'
 import { CustomModal } from '../../widgets/CustomModal'
 
 interface Props {
@@ -49,7 +51,7 @@ export const EmployeeEdit: FC<Props> = ({
   const fetchListDepartment = async () => {
     setIsLoadingList(true)
     try {
-      const response = await fetchApi.getListDepartment({})
+      const response = await fetchApi.getListDepartment({ params: { first: 100 } })
       setListDepartment(response.data)
       setIsLoadingList(false)
     } catch (error) {
@@ -60,11 +62,10 @@ export const EmployeeEdit: FC<Props> = ({
 
   useEffect(() => {
     fetchListDepartment()
-  }, [])
+  }, [updateItem])
 
   const clickLeftButton = () => {
-    // setError({} as any)
-    // setInputValues({} as any)
+    setError({} as any)
   }
 
   const clickRightButton = async () => {
@@ -109,6 +110,8 @@ export const EmployeeEdit: FC<Props> = ({
     }))
   }
 
+  console.log(inputValues)
+
   return (
     <CustomModal
       title="EDIT EMPLOYEE"
@@ -119,7 +122,7 @@ export const EmployeeEdit: FC<Props> = ({
       clickRightButton={clickRightButton}
     >
       {isLoadingList ? (
-        <Spinner size="sm" />
+        <div className="text-center"><Loading /></div>
       ) : (
         <Form>
           <FormGroup>
@@ -154,7 +157,7 @@ export const EmployeeEdit: FC<Props> = ({
             </Label>
             <Input
               type="date"
-              defaultValue={inputValues.birth_date || ''}
+              defaultValue={dayjs(inputValues.birth_date).format('YYYY-MM-DD') || ''}
               name="birth_date"
               placeholder="date placeholder"
               onChange={onChangeValue}
@@ -217,7 +220,7 @@ export const EmployeeEdit: FC<Props> = ({
           
           <div className="d-flex justify-content-start ">
             <FormGroup check style={{ marginRight: 25 }}>
-              <Label check>
+              <Label style={{ marginRight: 5 }}>
                 <Input checked={inputValues.gender === '1'} value={'1'} type="radio" name="gender" onChange={onChangeValue} /> Nam 
               </Label>
             </FormGroup>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink, Navbar, Col, Input } from 'reactstrap'
 import { Image } from 'react-bootstrap'
-import { IconLogin } from '~/src/components/elements'
+import { IconLogin } from '~/src/components/elements/Icon'
 import { clearLocalStorage, getLocalStorage, removeLocalStorage } from '~/src/helpers/localStorage'
 import { APP_TOKEN, GET_ME } from '~/src/models'
 import { IMe } from '~/src/models/users'
@@ -33,13 +33,13 @@ export const Header = ({ setAppToken }) => {
         </Col>
         <Col className="d-flex justify-content-end" xs="">
           <NavLink style={{ color: '#FFFFFF' }}>
-            <span className="cursor-pointer ml-2" title='Logout'>
+            <span className="cursor-pointer ml-2">
               {user.name}
             </span>
           </NavLink>
           <NavLink style={{ color: '#FFFFFF' }}>
-            <span className="cursor-pointer" title='Logout'>
-              <Image src={user.imageUrl} className={styles.avatar} alt="avatar" />
+            <span className="cursor-pointer">
+              <Image src={user.imageUrl || '/static/img/avatar_female.png'} className={styles.avatar} alt="avatar" />
             </span>
           </NavLink>
           <NavLink style={{ color: '#FFFFFF' }} onClick={onHandleLogout}>

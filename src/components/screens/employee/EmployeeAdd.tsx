@@ -48,12 +48,13 @@ export const EmployeeAdd: FC<Props> = ({
   }
 
   const fetchDepartment = async () => {
-    const response = await fetchApi.getListDepartment({})
+    const response = await fetchApi.getListDepartment({ params: { first: 100 } })
     setListDepartment(response.data)
   }
+
   const fetchUser = async () => {
-     const response = await fetchApi.getListUser({})
-     setListUser(response.data)
+    const response = await fetchApi.getListUser({ params: { first: 100, nonactive: '1' } })
+    setListUser(response.data)
   }
 
   useEffect(() => {
@@ -225,7 +226,7 @@ export const EmployeeAdd: FC<Props> = ({
         </Label>
         <div className="d-flex justify-content-start ">
           <FormGroup>
-            <Label style={{ marginRight: 25 }}>
+            <Label>
               <Input
                 checked
                 type="radio"
@@ -235,6 +236,7 @@ export const EmployeeAdd: FC<Props> = ({
               />{' '}
               Nam
               <Input
+                style={{ marginLeft: 10 }}
                 type="radio"
                 name="gender"
                 value={'2'}

@@ -13,15 +13,13 @@ export const Layout = ({ children }) => {
   
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setAppToken (() => getLocalStorage(APP_TOKEN))
+      setAppToken (() => JSON.parse(getLocalStorage(APP_TOKEN)))
     }
-    if (!appToken) {
-      Router.push({ pathname: '/' })
-    }
-  }, [])
- const handleSetAppToken = (token) => {
+  }, [appToken])
+
+  const handleSetAppToken = (token) => {
     setAppToken(token)
- }
+  }
 
   return (
     <>
