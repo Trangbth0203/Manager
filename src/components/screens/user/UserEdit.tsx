@@ -84,7 +84,7 @@ export const UserEdit: FC<Props> = ({
       const response = await fetchApi.updateUser(updateItem.id, params, config)
       if (!response.status) {
         setIsLoading(false)
-        return setError(response)
+        return setError((response as any).message)
       }
       setIsLoading(false)
       toast.success('Chỉnh sửa thành công', { position: 'top-right' })
@@ -144,8 +144,8 @@ export const UserEdit: FC<Props> = ({
             placeholder="name"
             onChange={onChangeValue}
           />
-          {error && error.message && error.name ? (
-            <span className="text-danger">{error.message.name[0]}</span>
+          {error  && error.name ? (
+            <span className="text-danger">{error.name[0]}</span>
           ) : null}
         </FormGroup>
         <FormGroup className="mt-3">
@@ -168,8 +168,8 @@ export const UserEdit: FC<Props> = ({
                 placeholder="*************"
                 onChange={onChangeValue}
               />
-              {error && error.message && error.password ? (
-                <p className="text-danger">{error.message.password[0]}</p>
+              {error && error.password ? (
+                <p className="text-danger">{error.password[0]}</p>
               ) : null}
             </FormGroup>
             <FormGroup className="mt-3">
@@ -182,8 +182,8 @@ export const UserEdit: FC<Props> = ({
                 placeholder="*************"
                 onChange={onChangeValue}
               />
-              {error && error.message &&  error.confirm_password ? (
-                <span className="text-danger">{error.message.confirm_password[0]}</span>
+              {error  &&  error.confirm_password ? (
+                <span className="text-danger">{error.confirm_password[0]}</span>
               ) : null}
             </FormGroup>
           </>

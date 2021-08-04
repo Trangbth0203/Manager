@@ -67,7 +67,7 @@ export const DepartmentEdit: FC<Props> = ({
       )
       if (!response.status) {
         setIsLoading(false)
-        return setError(response)
+        return setError((response as any).message)
       }
       setIsLoading(false)
       toast.success('Chỉnh sửa thành công', { position: 'top-right' })
@@ -106,7 +106,7 @@ export const DepartmentEdit: FC<Props> = ({
             defaultValue={updateItem.department_name || ''}
             onChange={onChangeValue}
           />
-          {error && error.message && error.department_name ? (
+          {error  && error.department_name ? (
             <p className="text-danger">{error.department_name[0]}</p>
           ) : null}
         </FormGroup>
@@ -120,7 +120,7 @@ export const DepartmentEdit: FC<Props> = ({
             defaultValue={updateItem.department_phone || ''}
             onChange={onChangeValue}
           />
-          {error && error.message && error.department_phone ? (
+          {error && error.department_phone ? (
             <p className="text-danger">{error.department_phone[0]}</p>
           ) : null}
         </FormGroup>
@@ -133,7 +133,7 @@ export const DepartmentEdit: FC<Props> = ({
             defaultValue={updateItem.department_manager || ''}
             onChange={onChangeValue}
           />
-          {error && error.message && error.department_manager ? (
+          {error && error.department_manager ? (
             <p className="text-danger">{error.department_manager[0]}</p>
           ) : null}
         </FormGroup>
@@ -146,7 +146,7 @@ export const DepartmentEdit: FC<Props> = ({
             placeholder="Name OtherManagers"
             onChange={onChangeValue}
           />
-          {error && error.message && error.department_manager_other ? (
+          {error  && error.department_manager_other ? (
             <p className="text-danger">{error.department_manager_other[0]}</p>
           ) : null}
         </FormGroup>

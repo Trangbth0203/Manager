@@ -10,6 +10,7 @@ import { UserAdd } from '~/src/components/screens/user/UserAdd'
 import { UserEdit } from '~/src/components/screens/user/UserEdit'
 import { Pagination } from '~/src/components/elements/pagination'
 import { Search } from '~/src/components/elements/search'
+import { Loading } from '~/src/components/elements/Loading'
 import styles from '~/styles/pages/users.module.scss'
 
 export const UserList = () => {
@@ -93,7 +94,8 @@ export const UserList = () => {
                 </tr>
               </thead>
               <tbody>
-                {listUser &&
+                { isLoading ? <Loading /> : 
+                listUser &&
                   listUser.map((item: IUsers, index: number) => {
                     return (
                       <tr key={index}>

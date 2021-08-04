@@ -85,7 +85,7 @@ export const EmployeeEdit: FC<Props> = ({
       const response = await fetchApi.updateEmployee(updateItem.id, params, config)
       if (!response.status) {
         setIsLoading(false)
-        return setError(response)
+        return setError((response as any).message)
       }
       toast.success('Updated successfully', { position: 'top-right' })
       setIsLoading(false)
@@ -143,8 +143,8 @@ export const EmployeeEdit: FC<Props> = ({
                   )
                 })}
             </Input>
-            {error && error.message && error.department_id ? (
-              <p className="text-danger">{error.message.department_id}</p>
+            {error &&  error.department_id ? (
+              <p className="text-danger">{error.department_id}</p>
             ) : null}
           </FormGroup>
 
@@ -159,8 +159,8 @@ export const EmployeeEdit: FC<Props> = ({
               placeholder="date placeholder"
               onChange={onChangeValue}
             />
-            {error && error.message && error.birth_date ? (
-              <p className="text-danger">{error.message.birth_date}</p>
+            {error  && error.birth_date ? (
+              <p className="text-danger">{error.birth_date}</p>
             ) : null}
           </FormGroup>
           <div className="d-flex justify-content-between">
@@ -175,8 +175,8 @@ export const EmployeeEdit: FC<Props> = ({
                 defaultValue={inputValues.first_name || ''}
                 onChange={onChangeValue}
               />
-              {error && error.message && error.first_name ? (
-                <p className="text-danger">{error.message.first_name}</p>
+              {error && error.first_name ? (
+                <p className="text-danger">{error.first_name}</p>
               ) : null}
             </FormGroup>
             <FormGroup className="mt-3">
@@ -190,8 +190,8 @@ export const EmployeeEdit: FC<Props> = ({
                 defaultValue={inputValues.last_name || ''}
                 onChange={onChangeValue}
               />
-              {error && error.message && error.last_name ? (
-                <p className="text-danger">{error.message.last_name}</p>
+              {error && error.last_name ? (
+                <p className="text-danger">{error.last_name}</p>
               ) : null}
             </FormGroup>
           </div>
@@ -207,8 +207,8 @@ export const EmployeeEdit: FC<Props> = ({
               placeholder="with Age"
               onChange={onChangeValue}
             />
-            {error && error.message && error.age ? (
-              <p className="text-danger">{error.message.age}</p>
+            {error  && error.age ? (
+              <p className="text-danger">{error.age}</p>
             ) : null}
           </FormGroup>
           <Label className="mt-3" for="exampleEmail">

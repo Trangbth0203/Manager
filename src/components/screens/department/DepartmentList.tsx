@@ -16,6 +16,7 @@ import { DepartmentAdd } from '~/src/components/screens/department/DepartmentAdd
 import { DepartmentEdit } from '~/src/components/screens/department/DepartmentEdit'
 import { Pagination } from '~/src/components/elements/pagination'
 import { Search } from '~/src/components/elements/search'
+import { Loading } from '~/src/components/elements/Loading'
 import styles from '~/styles/pages/departments.module.scss'
 
 export const DepartmentList = () => {
@@ -107,11 +108,7 @@ export const DepartmentList = () => {
                 </tr>
               </thead>
               <tbody>
-                {isLoading ? (
-                  <tr className="text-center">
-                    <td colSpan={7}>Chưa có dữ liệu</td>
-                  </tr>
-                ) : (
+                {isLoading ? <Loading /> : 
                   listDepartment &&
                   listDepartment.map(
                     (item: IDepartment, index: number) => {
@@ -144,7 +141,7 @@ export const DepartmentList = () => {
                       )
                     }
                   )
-                )}
+                }
               </tbody>
             </Table>
           </CardText>

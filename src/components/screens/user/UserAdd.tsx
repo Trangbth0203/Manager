@@ -51,7 +51,7 @@ export const UserAdd = ({ openModalCreate, setOpenModalCreate, refetch }) => {
     formData.set('updated_by', 'SYSTEM')
     const response = await fetchApi.postCreateUser(formData)
     if (!response.status) {
-      return setError(response)
+      return setError((response as any).message)
     }
     toast.success('Thêm mới thành công!', { position: 'top-right' })
     setInput(initialInput)
@@ -103,8 +103,8 @@ export const UserAdd = ({ openModalCreate, setOpenModalCreate, refetch }) => {
           placeholder="name"
           onChange={handleOnChange}
         />
-        {error &&  error.message && error.name ? (
-          <span className="text-danger">{error.message.name[0]}</span>
+        {error &&  error.name ? (
+          <span className="text-danger">{error.name[0]}</span>
         ) : null}
       </FormGroup>
       <FormGroup className="mt-3">
@@ -117,8 +117,8 @@ export const UserAdd = ({ openModalCreate, setOpenModalCreate, refetch }) => {
           placeholder="email"
           onChange={handleOnChange}
         />
-        {error && error.message  && error.email ? (
-          <span className="text-danger">{error.message.email[0]}</span>
+        {error  && error.email ? (
+          <span className="text-danger">{error.email[0]}</span>
         ) : null}
       </FormGroup>
       <FormGroup className="mt-3">
@@ -130,8 +130,8 @@ export const UserAdd = ({ openModalCreate, setOpenModalCreate, refetch }) => {
           placeholder="password "
           onChange={handleOnChange}
         />
-        {error &&  error.message && error.password ? (
-          <span className="text-danger">{error.message.password[0]}</span>
+        {error  && error.password ? (
+          <span className="text-danger">{error.password[0]}</span>
         ) : null}
       </FormGroup>
       <FormGroup className="mt-3">
@@ -143,8 +143,8 @@ export const UserAdd = ({ openModalCreate, setOpenModalCreate, refetch }) => {
           placeholder="confirm password "
           onChange={handleOnChange}
         />
-        {error && error.message &&  error.confirm_password ? (
-          <span className="text-danger">{error.message.confirm_password[0]}</span>
+        {error && error.confirm_password ? (
+          <span className="text-danger">{error.confirm_password[0]}</span>
         ) : null}
       </FormGroup>
     </Form>
