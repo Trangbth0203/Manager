@@ -33,5 +33,6 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 ## Link API
-Link API server: https://github.com/duthanhdl97/manager-server
+Link repo API server: https://github.com/duthanhdl97/manager-server
+Link API trê heroku: https://trang-huyen.herokuapp.com/api
 
