@@ -25,7 +25,6 @@ export const EmployeeList = () => {
   const [openModalCreate, setOpenModalCreate] = useState<boolean>(false)
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false)
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false)
-  const [fileName,setFileName] = useState('employee')
 
   const fetchEmployeeList = async () => {
     await fetchApi.getListEmployee({ params }).then((res) => {
@@ -78,6 +77,20 @@ export const EmployeeList = () => {
     }
   }
 
+  let csvData = [{}]
+  for (let i = 0; i < listEmployee.length; i++) {
+    csvData.push({
+      'STT': i,
+      'Department Name': listEmployee[i].department_name || '--',
+      'Email': listEmployee[i].employee_email || '--',
+      'Birthday': listEmployee[i].birth_date || '--',
+      'First Name': listEmployee[i].first_name || '--',
+      'Last Name': listEmployee[i].last_name || '--',
+      'Age': listEmployee[i].age || '--',
+      'Gender': GENDER[listEmployee[i].gender] || '--',
+    })
+  }
+
   return (
     <>
       <Card>
@@ -89,7 +102,7 @@ export const EmployeeList = () => {
             <Button className={styles.export} color="success" onClick={() => setOpenModalCreate(true)}>
               CREATE
             </Button>
-            <ExportCSV csvData={listEmployee}  fileName={fileName} />
+            <ExportCSV csvData={csvData} fileName={`employee-${dayjs().format('YYYY-MM-DD')}`} />
             </div>
           </div>
           <CardText>
