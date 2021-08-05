@@ -17,6 +17,7 @@ import { DepartmentEdit } from '~/src/components/screens/department/DepartmentEd
 import { Pagination } from '~/src/components/elements/pagination'
 import { Search } from '~/src/components/elements/search'
 import { Loading } from '~/src/components/elements/Loading'
+import { ExportCSV } from '~/src/components/elements/exportExcel'
 import styles from '~/styles/pages/departments.module.scss'
 
 export const DepartmentList = () => {
@@ -28,6 +29,7 @@ export const DepartmentList = () => {
   const [openModalCreate, setOpenModalCreate] = useState<boolean>(false)
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false)
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false)
+  const [fileName,setFileName] = useState('department')
 
   const fetchDepartmentList = async () => {
     try {
@@ -82,18 +84,22 @@ export const DepartmentList = () => {
       updateItem = listDepartment[updateIndex]
     }
   }
-
+  
   return (
     <div>
       <Card>
         <CardBody>
+          <CardTitle tag="h5">Departments</CardTitle>
           <div className="d-flex justify-content-between">
-            <CardTitle tag="h5">Departments</CardTitle>
-            <Button color="success" onClick={() => setOpenModalCreate(true)}>
+          <Search onChangeValue={onChangeValue} />
+            <div>
+            <Button className={styles.export} color="success" onClick={() => setOpenModalCreate(true)}>
               CREATE
             </Button>
+              <ExportCSV csvData={ listDepartment} fileName={fileName} />
+            </div>
           </div>
-          <Search onChangeValue={onChangeValue} />
+         
           <CardText>
             <Table bordered className="mt-3">
               <thead>

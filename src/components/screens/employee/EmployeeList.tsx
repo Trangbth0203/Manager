@@ -10,9 +10,10 @@ import { IconEdit, IconDelete } from '~/src/components/elements/Icon'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { EmployeeAdd } from '~/src/components/screens/employee/EmployeeAdd'
 import { EmployeeEdit } from '~/src/components/screens/employee/EmployeeEdit'
-import { Pagination } from '~/src/components/elements/Pagination'
-import { Search } from '~/src/components/elements/Search'
+import { Pagination } from '~/src/components/elements/pagination'
+import { Search } from '~/src/components/elements/search'
 import { Loading } from '~/src/components/elements/Loading'
+import { ExportCSV } from '~/src/components/elements/exportExcel'
 import styles from '~/styles/pages/employees.module.scss'
 
 export const EmployeeList = () => {
@@ -24,6 +25,7 @@ export const EmployeeList = () => {
   const [openModalCreate, setOpenModalCreate] = useState<boolean>(false)
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false)
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false)
+  const [fileName,setFileName] = useState('employee')
 
   const fetchEmployeeList = async () => {
     await fetchApi.getListEmployee({ params }).then((res) => {
@@ -80,13 +82,16 @@ export const EmployeeList = () => {
     <>
       <Card>
         <CardBody className="mt-3">
+        <CardTitle tag="h5">The list of employee</CardTitle>
           <div className="d-flex justify-content-between">
-            <CardTitle tag="h5">The list of employee</CardTitle>
-            <Button color="success" onClick={() => setOpenModalCreate(true)}>
+          <Search onChangeValue={onChangeValue} />
+            <div>
+            <Button className={styles.export} color="success" onClick={() => setOpenModalCreate(true)}>
               CREATE
             </Button>
+            <ExportCSV csvData={listEmployee}  fileName={fileName} />
+            </div>
           </div>
-          <Search onChangeValue={onChangeValue} />
           <CardText>
             <Table bordered className="mt-3">
               <thead>

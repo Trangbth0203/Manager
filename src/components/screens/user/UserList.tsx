@@ -8,9 +8,10 @@ import { IconEdit, IconDelete } from '~/src/components/elements/Icon'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { UserAdd } from '~/src/components/screens/user/UserAdd'
 import { UserEdit } from '~/src/components/screens/user/UserEdit'
-import { Pagination } from '~/src/components/elements/Pagination'
-import { Search } from '~/src/components/elements/Search'
+import { Pagination } from '~/src/components/elements/pagination'
+import { Search } from '~/src/components/elements/search'
 import { Loading } from '~/src/components/elements/Loading'
+import { ExportCSV } from '~/src/components/elements/exportExcel'
 import styles from '~/styles/pages/users.module.scss'
 
 export const UserList = () => {
@@ -22,6 +23,7 @@ export const UserList = () => {
   const [openModalCreate, setOpenModalCreate] = useState<boolean>(false)
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false)
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false)
+  const [fileName,setFileName] = useState('User')
 
   const fetchUserList = async () => {
     await fetchApi.getListUser({ params }).then((res) => {
@@ -75,13 +77,16 @@ export const UserList = () => {
     <>
       <Card>
         <CardBody>
-          <div className="d-flex justify-content-between">
             <CardTitle tag="h5">Users</CardTitle>
-            <Button color="success" onClick={() => setOpenModalCreate(true)}>
+          <div className="d-flex justify-content-between">
+            <Search onChangeValue={onChangeValue} />
+            <div>
+            <Button className={styles.export} color="success " onClick={() => setOpenModalCreate(true)}>
               CREATE
             </Button>
+            <ExportCSV  csvData={listUser}  fileName={fileName} />
+            </div>
           </div>
-          <Search onChangeValue={onChangeValue} />
           <CardText>
             <Table bordered className="mt-3">
               <thead>
