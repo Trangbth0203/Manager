@@ -173,7 +173,7 @@ export const EmployeeList = () => {
               <tbody>
                 {isLoading ? (
                   <tr>
-                    <td colSpan={9}>
+                    <td colSpan={10}>
                       {' '}
                       <Loading />{' '}
                     </td>

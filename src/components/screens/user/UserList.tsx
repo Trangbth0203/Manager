@@ -158,7 +158,7 @@ export const UserList = () => {
               <tbody>
                 {isLoading ? (
                   <tr>
-                    <td colSpan={4}>
+                    <td colSpan={5}>
                       {' '}
                       <Loading />{' '}
                     </td>

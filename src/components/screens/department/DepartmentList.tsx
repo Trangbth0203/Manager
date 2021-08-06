@@ -175,7 +175,7 @@ export const DepartmentList = () => {
               <tbody>
                 {isLoading ? (
                   <tr>
-                    <td colSpan={7}>
+                    <td colSpan={8}>
                       {' '}
                       <Loading />{' '}
                     </td>
