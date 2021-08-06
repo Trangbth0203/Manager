@@ -6,11 +6,13 @@ import {
   CardBody,
   CardTitle,
   Button,
+  Input,
 } from 'reactstrap'
 import { toast } from 'react-toastify'
+import dayjs from 'dayjs'
 import { IDepartment } from '~/src/models/departments'
 import fetchApi from '~/src/helpers/fetchApi'
-import { IconEdit, IconDelete } from '~/src/components/elements'
+import { IconEdit, IconDelete, IconCreate } from '~/src/components/elements'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { DepartmentAdd } from '~/src/components/screens/department/DepartmentAdd'
 import { DepartmentEdit } from '~/src/components/screens/department/DepartmentEdit'
@@ -29,7 +31,9 @@ export const DepartmentList = () => {
   const [openModalCreate, setOpenModalCreate] = useState<boolean>(false)
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false)
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false)
-  const [fileName,setFileName] = useState('department')
+  const [error, setError] = useState<any>()
+  const [fileName, setFileName] = useState('department')
+  const [valueChecked, setValueChecked] = useState([])
 
   const fetchDepartmentList = async () => {
     try {
@@ -77,6 +81,17 @@ export const DepartmentList = () => {
     }, 500)
   }
 
+  const onChangeValueChecked = (e) => {
+    const { checked, value } = e.target
+    const ids = [...valueChecked]
+    if (checked) {
+      setValueChecked([...ids, value])
+    } else {
+      const removeId = ids.filter((id) => id !== value)
+      setValueChecked(removeId)
+    }
+  }
+
   let updateItem = {}
   if (idUpdate) {
     const updateIndex = listDepartment.findIndex((item) => item.id === idUpdate)
@@ -84,26 +99,70 @@ export const DepartmentList = () => {
       updateItem = listDepartment[updateIndex]
     }
   }
-  
+  let csvData = []
+  for (let i = 1; i < listDepartment.length; i++) {
+    csvData.push({
+      STT: i,
+      'Department Name': listDepartment[i].department_name || '--',
+      Phone: listDepartment[i].department_phone || '--',
+      'Number Person': listDepartment[i].number_person || 0,
+      'Main Manager': listDepartment[i].department_manager || '--',
+      'Other Managers': listDepartment[i].department_manager_other || '--',
+    })
+  }
+
+  const onHandleDeleteIds = async (e) => {
+    e.preventDefault()
+    const formData = new FormData()
+    formData.set('ids', valueChecked.join(','))
+    try {
+      const response = await fetchApi.postRemoveMultiRecord(
+        'department',
+        formData
+      )
+      console.log(response)
+      if (!response.status) {
+        setIsLoading(false)
+        return setError((response as any).message)
+      }
+      toast.success('Xóa thành công', { position: 'top-right' })
+      fetchDepartmentList()
+    } catch (error) {
+      toast.error(`Có lỗi xảy ra`, { position: 'top-right' })
+    }
+  }
+
   return (
     <div>
       <Card>
         <CardBody>
           <CardTitle tag="h5">Departments</CardTitle>
           <div className="d-flex justify-content-between">
-          <Search onChangeValue={onChangeValue} />
+            <Search onChangeValue={onChangeValue} />
             <div>
-            <Button className={styles.export} color="success" onClick={() => setOpenModalCreate(true)}>
-              CREATE
-            </Button>
-              <ExportCSV csvData={ listDepartment} fileName={fileName} />
+              <Button
+                className={styles.export}
+                color="success"
+                onClick={() => setOpenModalCreate(true)}
+              >
+                {' '}
+                <span className={styles.iconCreate}>
+                  <IconCreate />{' '}
+                </span>
+                CREATE
+              </Button>
+              <ExportCSV
+                csvData={csvData}
+                fileName={`department-${dayjs().format('YYYY-MM-DD')}`}
+              />
             </div>
           </div>
-         
+
           <CardText>
             <Table bordered className="mt-3">
               <thead>
                 <tr>
+                  <th></th>
                   <th>STT</th>
                   <th>Name</th>
                   <th>Number Person</th>
@@ -114,44 +173,60 @@ export const DepartmentList = () => {
                 </tr>
               </thead>
               <tbody>
-                {isLoading ? 
-               (<tr><td colSpan={7}> <Loading /> </td></tr>): (
+                {isLoading ? (
+                  <tr>
+                    <td colSpan={7}>
+                      {' '}
+                      <Loading />{' '}
+                    </td>
+                  </tr>
+                ) : (
                   listDepartment &&
-                  listDepartment.map(
-                    (item: IDepartment, index: number) => {
-                      return (
-                        <tr key={index}>
-                          <th scope="row">{++index + params.first * (params.page - 1)}</th>
-                          <td>{item.department_name}</td>
-                          <td>{item.number_person}</td>
-                          <td>{item.department_phone}</td>
-                          <td>{item.department_manager}</td>
-                          <td>{item.department_manager_other}</td>
-                          <td>
-                            <span
-                              className={styles.iconEdit}
-                              onClick={() => {
-                                setOpenModalEdit(true)
-                                setIdUpdate(item.id)
-                              }}
-                            >
-                              <IconEdit />
-                            </span>
-                            <span
-                              className={styles.iconDelete}
-                              onClick={() => onDeleDepartment (item.id)}
-                            >
-                              <IconDelete />
-                            </span>
-                          </td>
-                        </tr>
-                      )
-                    }
-                  )
+                  listDepartment.map((item: IDepartment, index: number) => {
+                    return (
+                      <tr key={index}>
+                        <th>
+                          <Input
+                            type="checkbox"
+                            onChange={onChangeValueChecked}
+                            value={item.id}
+                          />
+                        </th>
+                        <th scope="row">
+                          {++index + params.first * (params.page - 1)}
+                        </th>
+                        <td>{item.department_name}</td>
+                        <td>{item.number_person}</td>
+                        <td>{item.department_phone}</td>
+                        <td>{item.department_manager}</td>
+                        <td>{item.department_manager_other}</td>
+                        <td>
+                          <span
+                            className={styles.iconEdit}
+                            onClick={() => {
+                              setOpenModalEdit(true)
+                              setIdUpdate(item.id)
+                            }}
+                          >
+                            <IconEdit />
+                          </span>
+                          <span
+                            className={styles.iconDelete}
+                            onClick={() => onDeleDepartment(item.id)}
+                          >
+                            <IconDelete />
+                          </span>
+                        </td>
+                      </tr>
+                    )
+                  })
                 )}
               </tbody>
             </Table>
           </CardText>
+          <Button color="danger" type="button" onClick={onHandleDeleteIds}>
+            Delete
+          </Button>
         </CardBody>
       </Card>
       <Pagination
@@ -166,7 +241,9 @@ export const DepartmentList = () => {
         title={'You are Sure'}
         show={openModalDelete}
         setShow={setOpenModalDelete}
-      >aaaa</CustomModal>
+      >
+        aaaa
+      </CustomModal>
       {idUpdate && (
         <DepartmentEdit
           updateItem={updateItem}

@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Card, CardText, CardBody, CardTitle, Button } from 'reactstrap'
+import {
+  Table,
+  Card,
+  CardText,
+  CardBody,
+  CardTitle,
+  Button,
+  Input,
+} from 'reactstrap'
 import { toast } from 'react-toastify'
+import dayjs from 'dayjs'
 import fetchApi from '~/src/helpers/fetchApi'
 import { IUsers } from '~/src/models/users'
 import { DEFAULT_CURRENT_PAGE } from '~/src/models'
-import { IconEdit, IconDelete } from '~/src/components/elements'
+import { IconEdit, IconDelete, IconCreate } from '~/src/components/elements'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { UserAdd } from '~/src/components/screens/user/UserAdd'
 import { UserEdit } from '~/src/components/screens/user/UserEdit'
@@ -23,7 +32,9 @@ export const UserList = () => {
   const [openModalCreate, setOpenModalCreate] = useState<boolean>(false)
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false)
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false)
-  const [fileName,setFileName] = useState('User')
+  const [fileName, setFileName] = useState('User')
+  const [valueChecked, setValueChecked] = useState([])
+  const [error, setError] = useState<any>()
 
   const fetchUserList = async () => {
     await fetchApi.getListUser({ params }).then((res) => {
@@ -63,11 +74,46 @@ export const UserList = () => {
       setParams({ ...params, keyword: value })
     }, 500)
   }
+  const onChangeValueChecked = (e) => {
+    const { checked, value } = e.target
+    const ids = [...valueChecked]
+    if (checked) {
+      setValueChecked([...ids, value])
+    } else {
+      const removeId = ids.filter((id) => id !== value)
+      setValueChecked(removeId)
+    }
+  }
   let updateItem = {}
   if (idUpdate) {
     const updateIndex = listUser.findIndex((item) => item.id === idUpdate)
     if (updateIndex > -1) {
       updateItem = listUser[updateIndex]
+    }
+  }
+  let csvData = []
+  for (let i = 1; i < listUser.length; i++) {
+    csvData.push({
+      STT: i,
+      Name: listUser[i].name || '--',
+      Email: listUser[i].email || '--',
+    })
+  }
+  const onHandleDeleteIds = async (e) => {
+    e.preventDefault()
+    const formData = new FormData()
+    formData.set('ids', valueChecked.join(','))
+    try {
+      const response = await fetchApi.postRemoveMultiRecord('user', formData)
+      console.log(response)
+      if (!response.status) {
+        setIsLoading(false)
+        return setError((response as any).message)
+      }
+      toast.success('Xóa thành công', { position: 'top-right' })
+      fetchUserList()
+    } catch (error) {
+      toast.error(`Có lỗi xảy ra`, { position: 'top-right' })
     }
   }
 
@@ -77,20 +123,31 @@ export const UserList = () => {
     <>
       <Card>
         <CardBody>
-            <CardTitle tag="h5">Users</CardTitle>
+          <CardTitle tag="h5">Users</CardTitle>
           <div className="d-flex justify-content-between">
             <Search onChangeValue={onChangeValue} />
             <div>
-            <Button className={styles.export} color="success " onClick={() => setOpenModalCreate(true)}>
-              CREATE
-            </Button>
-            <ExportCSV  csvData={listUser}  fileName={fileName} />
+              <Button
+                className={styles.export}
+                color="success "
+                onClick={() => setOpenModalCreate(true)}
+              >
+                <span className={styles.iconCreate}>
+                  <IconCreate />{' '}
+                </span>
+                CREATE
+              </Button>
+              <ExportCSV
+                csvData={csvData}
+                fileName={`user-${dayjs().format('YYYY-MM-DD')}`}
+              />
             </div>
           </div>
           <CardText>
             <Table bordered className="mt-3">
               <thead>
                 <tr>
+                  <th></th>
                   <th>STT</th>
                   {/* <th>Role Name</th> */}
                   <th>Name</th>
@@ -99,11 +156,25 @@ export const UserList = () => {
                 </tr>
               </thead>
               <tbody>
-                {  isLoading ?  (<tr><td colSpan={4}> <Loading /> </td></tr>) :
-                listUser &&
+                {isLoading ? (
+                  <tr>
+                    <td colSpan={4}>
+                      {' '}
+                      <Loading />{' '}
+                    </td>
+                  </tr>
+                ) : (
+                  listUser &&
                   listUser.map((item: IUsers, index: number) => {
                     return (
                       <tr key={index}>
+                        <td>
+                          <Input
+                            type="checkbox"
+                            onChange={onChangeValueChecked}
+                            value={item.id}
+                          />
+                        </td>
                         <th scope="row">
                           {++index + params.first * (params.page - 1)}
                         </th>
@@ -130,10 +201,14 @@ export const UserList = () => {
                         </td>
                       </tr>
                     )
-                  })}
+                  })
+                )}
               </tbody>
             </Table>
           </CardText>
+          <Button color="danger" type="button" onClick={onHandleDeleteIds}>
+            Delete
+          </Button>
         </CardBody>
       </Card>
       <Pagination
@@ -151,13 +226,12 @@ export const UserList = () => {
       >
       </CustomModal>
       {idUpdate ? (
-         <UserEdit 
-         updateItem={updateItem}
-         openModalEdit={openModalEdit}
-         setOpenModalEdit={setOpenModalEdit}
-         fetchUserList={fetchUserList}
-         
-         />
+        <UserEdit
+          updateItem={updateItem}
+          openModalEdit={openModalEdit}
+          setOpenModalEdit={setOpenModalEdit}
+          fetchUserList={fetchUserList}
+        />
       ) : null}
       <UserAdd
         openModalCreate={openModalCreate}

@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Card, CardText, CardBody, CardTitle, Button } from 'reactstrap'
+import {
+  Table,
+  Card,
+  CardText,
+  CardBody,
+  CardTitle,
+  Button,
+  Input,
+} from 'reactstrap'
 import dayjs from 'dayjs'
 import { GENDER } from '~/src/models/employees'
 import { DEFAULT_CURRENT_PAGE } from '~/src/models'
 import { toast } from 'react-toastify'
 import fetchApi from '~/src/helpers/fetchApi'
 import { IEmployee } from '~/src/models/employees'
-import { IconEdit, IconDelete } from '~/src/components/elements'
+import { IconEdit, IconDelete, IconCreate } from '~/src/components/elements'
 import { CustomModal } from '~/src/components/widgets/CustomModal'
 import { EmployeeAdd } from '~/src/components/screens/employee/EmployeeAdd'
 import { EmployeeEdit } from '~/src/components/screens/employee/EmployeeEdit'
@@ -22,9 +30,11 @@ export const EmployeeList = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [idUpdate, setIdUpdate] = useState<string>('')
   const [listEmployee, setListEmployee] = useState([])
+  const [error, setError] = useState<any>()
   const [openModalCreate, setOpenModalCreate] = useState<boolean>(false)
   const [openModalEdit, setOpenModalEdit] = useState<boolean>(false)
   const [openModalDelete, setOpenModalDelete] = useState<boolean>(false)
+  const [valueChecked, setValueChecked] = useState([])
 
   const fetchEmployeeList = async () => {
     await fetchApi.getListEmployee({ params }).then((res) => {
@@ -68,7 +78,16 @@ export const EmployeeList = () => {
       setParams({ ...params, keyword: value })
     }, 500)
   }
-
+  const onChangeValueChecked = (e) => {
+    const { checked, value } = e.target
+    const ids = [...valueChecked]
+    if (checked) {
+      setValueChecked([...ids, value])
+    } else {
+      const removeId = ids.filter((id) => id !== value)
+      setValueChecked(removeId)
+    }
+  }
   let updateItem = {}
   if (idUpdate) {
     const updateIndex = listEmployee.findIndex((item) => item.id === idUpdate)
@@ -77,38 +96,69 @@ export const EmployeeList = () => {
     }
   }
 
-  let csvData = [{}]
-  for (let i = 0; i < listEmployee.length; i++) {
+  let csvData = []
+  for (let i = 1; i < listEmployee.length; i++) {
     csvData.push({
-      'STT': i,
+      STT: i,
       'Department Name': listEmployee[i].department_name || '--',
-      'Email': listEmployee[i].employee_email || '--',
-      'Birthday': listEmployee[i].birth_date || '--',
+      Email: listEmployee[i].employee_email || '--',
+      Birthday: listEmployee[i].birth_date || '--',
       'First Name': listEmployee[i].first_name || '--',
       'Last Name': listEmployee[i].last_name || '--',
-      'Age': listEmployee[i].age || '--',
-      'Gender': GENDER[listEmployee[i].gender] || '--',
+      Age: listEmployee[i].age || '--',
+      Gender: GENDER[listEmployee[i].gender] || '--',
     })
+  }
+  const onHandleDeleteIds = async (e) => {
+    e.preventDefault()
+    const formData = new FormData()
+    formData.set('ids', valueChecked.join(','))
+    try {
+      const response = await fetchApi.postRemoveMultiRecord(
+        'employee',
+        formData
+      )
+      console.log(response)
+      if (!response.status) {
+        setIsLoading(false)
+        return setError((response as any).message)
+      }
+      toast.success('Xóa thành công', { position: 'top-right' })
+      fetchEmployeeList()
+    } catch (error) {
+      toast.error(`Có lỗi xảy ra`, { position: 'top-right' })
+    }
   }
 
   return (
     <>
       <Card>
         <CardBody className="mt-3">
-        <CardTitle tag="h5">The list of employee</CardTitle>
+          <CardTitle tag="h5">The list of employee</CardTitle>
           <div className="d-flex justify-content-between">
-          <Search onChangeValue={onChangeValue} />
+            <Search onChangeValue={onChangeValue} />
             <div>
-            <Button className={styles.export} color="success" onClick={() => setOpenModalCreate(true)}>
-              CREATE
-            </Button>
-            <ExportCSV csvData={csvData} fileName={`employee-${dayjs().format('YYYY-MM-DD')}`} />
+              <Button
+                className={styles.export}
+                color="success"
+                onClick={() => setOpenModalCreate(true)}
+              >
+                <span className={styles.iconCreate}>
+                  <IconCreate />{' '}
+                </span>
+                CREATE
+              </Button>
+              <ExportCSV
+                csvData={csvData}
+                fileName={`employee-${dayjs().format('YYYY-MM-DD')}`}
+              />
             </div>
           </div>
           <CardText>
             <Table bordered className="mt-3">
               <thead>
                 <tr>
+                  <th></th>
                   <th>STT</th>
                   <th>Department Name</th>
                   <th>Email</th>
@@ -121,11 +171,25 @@ export const EmployeeList = () => {
                 </tr>
               </thead>
               <tbody>
-                { isLoading ?  (<tr><td colSpan={9}> <Loading /> </td></tr>)  : 
-                listEmployee &&
+                {isLoading ? (
+                  <tr>
+                    <td colSpan={9}>
+                      {' '}
+                      <Loading />{' '}
+                    </td>
+                  </tr>
+                ) : (
+                  listEmployee &&
                   listEmployee.map((item: IEmployee, index: number) => {
                     return (
                       <tr key={index}>
+                        <td>
+                          <Input
+                            type="checkbox"
+                            onChange={onChangeValueChecked}
+                            value={item.id}
+                          />
+                        </td>
                         <th scope="row">
                           {++index + params.first * (params.page - 1)}
                         </th>
@@ -155,10 +219,14 @@ export const EmployeeList = () => {
                         </td>
                       </tr>
                     )
-                  })}
+                  })
+                )}
               </tbody>
             </Table>
           </CardText>
+          <Button color="danger" type="button" onClick={onHandleDeleteIds}>
+            Delete
+          </Button>
         </CardBody>
       </Card>
       <Pagination

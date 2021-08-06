@@ -52,4 +52,7 @@ export default class fetchApi {
   static getProfile(params) {
     return http.get(`/v1/profile`, params)
   }
+  static postRemoveMultiRecord(key, params) {
+    return http.post(`v1/${key}/delete-multi`, params)
+  }
 }
